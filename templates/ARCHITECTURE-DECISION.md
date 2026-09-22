@@ -1,0 +1,88 @@
+# Architecture Decision Record
+
+Status: `PROPOSED | ACCEPTED | SUPERSEDED`
+Decision reference:
+Date:
+Decision owner:
+
+## Context
+
+## Architecture question
+
+## Success criterion
+
+## Out of scope
+
+## Current state / constraints
+
+## Options considered
+
+### Option A
+
+Advantages:
+
+- 
+
+Costs / drawbacks:
+
+- 
+
+Reversibility:
+
+- 
+
+### Option B
+
+Advantages:
+
+- 
+
+Costs / drawbacks:
+
+- 
+
+Reversibility:
+
+- 
+
+### Option C
+
+Optional.
+
+## Decision
+
+## Rationale
+
+## What we give up
+
+## Consequences
+
+## Risks
+
+## Architecture Impact Check
+
+| Area | Result | Notes |
+|---|---|---|
+| Data model | NO IMPACT / IMPACT / UNKNOWN | |
+| Component boundaries | NO IMPACT / IMPACT / UNKNOWN | |
+| Ownership / responsibilities | NO IMPACT / IMPACT / UNKNOWN | |
+| Persistence / state | NO IMPACT / IMPACT / UNKNOWN | |
+| API / contracts | NO IMPACT / IMPACT / UNKNOWN | |
+| Runtime / deployment | NO IMPACT / IMPACT / UNKNOWN | |
+| Security / identity | NO IMPACT / IMPACT / UNKNOWN | |
+| Environment parity | NO IMPACT / IMPACT / UNKNOWN | |
+| Cost / portability | NO IMPACT / IMPACT / UNKNOWN | |
+
+A material `UNKNOWN` blocks final architecture approval.
+
+## What could change this decision
+
+## Deferred items
+
+## Approval
+
+Expected token:
+
+```text
+APPROVE_ARCHITECTURE <ref>
+```

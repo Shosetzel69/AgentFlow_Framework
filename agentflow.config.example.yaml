@@ -1,0 +1,48 @@
+framework:
+  name: AgentFlow
+  version: "1.1.0"
+
+project:
+  name: "<project-name>"
+  process: AGENTFLOW
+  legacy_transition: false
+
+approval:
+  owner_model: single_owner # single_owner | multi_approver
+  tokens:
+    transfer: "APPROVE_TRANSFER"
+    architecture: "APPROVE_ARCHITECTURE"
+    task_contract: "APPROVE_TASK_CONTRACT"
+    prod: "PROD_GO"
+
+environments:
+  dev: "<dev-environment>"
+  test: "<test-environment>"
+  prod: "<prod-environment>"
+
+source_control:
+  provider: "<github|gitlab|azure-devops|other>"
+  protected_branch: "main"
+  direct_write_protected_branch: false
+  candidate_identity: "commit_sha"
+
+issue_tracking:
+  provider: "<github-issues|jira|linear|azure-boards|other>"
+
+execution:
+  default_retry_limit: 2
+  independent_review_required: true
+  test_independence_required: true
+
+release:
+  rollback_required_before_prod: true
+  explicit_prod_go_required: true
+  exact_candidate_promotion_required: true
+
+documentation:
+  architecture: "<path-or-system>"
+  governance: "GOVERNANCE.md"
+  lifecycle: "DELIVERY-LIFECYCLE.md"
+  ai_rules: "AI-EXECUTION-RULES.md"
+  requirements: "<path-or-system>"
+  contracts: "<path-or-system>"
