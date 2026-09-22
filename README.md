@@ -18,6 +18,23 @@ The framework is designed to provide **high execution autonomy inside explicit d
 
 The framework is deliberately tool-neutral. GitHub, GitLab, Azure DevOps, Jira, Cloudflare, AWS, GCP, Azure, PostgreSQL, and specific AI products are adapters, not part of the Core.
 
+## Start here
+
+For framework use:
+
+1. read `GOVERNANCE.md`;
+2. read `AGENTFLOW.md`;
+3. use `BOOTSTRAP-PROCEDURE.md` for a new target project;
+4. generate a Project Adapter from `templates/PROJECT-ADAPTER.md`.
+
+For framework development or a fresh AI session:
+
+1. read `docs/PROJECT-CONTEXT-HANDOFF.md`;
+2. read `docs/design/ORIGIN-AND-DESIGN-INTENT.md`;
+3. load only the Core document relevant to the current task.
+
+See `docs/INDEX.md` for the documentation map.
+
 ## Core principles
 
 1. **Decide before coding.**
@@ -30,8 +47,9 @@ The framework is deliberately tool-neutral. GitHub, GitLab, Azure DevOps, Jira, 
 ## Kit structure
 
 ```text
-agentflow-kit/
+AgentFlow_Framework/
 ├── README.md
+├── VERSION
 ├── FRAMEWORK-CONFIG.md
 ├── BOOTSTRAP-PROCEDURE.md
 ├── GOVERNANCE.md
@@ -42,22 +60,15 @@ agentflow-kit/
 ├── ADOPTION-GUIDE.md
 ├── agentflow.config.example.yaml
 ├── templates/
-│   ├── REQUIREMENT.md
-│   ├── DEVELOPMENT-TRANSFER.md
-│   ├── ARCHITECTURE-DECISION.md
-│   ├── AGENT-TASK-CONTRACT.md
-│   ├── EVIDENCE-BUNDLE.md
-│   ├── INDEPENDENT-REVIEW.md
-│   ├── EXECUTABLE-TASK.md
-│   ├── RELEASE-RECORD.md
-│   └── PROJECT-ADAPTER.md
-└── examples/
-    └── EXAMPLE-FLOW.md
+├── examples/
+└── docs/
 ```
 
 ## Bootstrap a new project
 
-For a new target project, start with `BOOTSTRAP-PROCEDURE.md`. Bootstrap inspects the project in read-only mode, builds the source-of-truth and gap maps, then proposes `PROJECT-ADAPTER.md`, `agentflow.config.yaml`, and `BOOTSTRAP-REPORT.md`. Activate/persist the framework only after explicit owner approval.
+Start with `BOOTSTRAP-PROCEDURE.md`. Bootstrap inspects the target project in read-only mode, builds the source-of-truth and gap maps, then proposes `PROJECT-ADAPTER.md`, `agentflow.config.yaml`, and `BOOTSTRAP-REPORT.md`.
+
+Activate/persist the framework only after explicit owner approval.
 
 ## Minimum adoption
 
@@ -148,6 +159,16 @@ Configure per project:
 - security/compliance gates;
 - owner vs multi-approver model.
 
+## Design intent
+
+The framework originated from a practical continuity problem: software work spread across multiple AI chats becomes difficult to resume safely.
+
+The working design principle is:
+
+> No information required for controlled continuation of the project should exist exclusively in a conversation.
+
+This principle and the proposed Cold Start Test are documented in `docs/design/ORIGIN-AND-DESIGN-INTENT.md`. They are design records; changes to Core should still follow the framework's own decision process.
+
 ## Non-goals
 
 AgentFlow is not inherently:
@@ -161,3 +182,7 @@ AgentFlow is not inherently:
 - an AI vendor integration.
 
 Use only the controls justified by project risk and scale.
+
+## License
+
+No project license has been selected yet. Do not assume reuse/distribution terms until a license is explicitly added.
