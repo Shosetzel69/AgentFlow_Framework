@@ -2,7 +2,7 @@
 
 Project:
 Adapter version:
-Framework version: `1.0.0`
+Framework version: `1.1.0`
 
 ## 1. Ownership / approvals
 
