@@ -1,25 +1,22 @@
 # Requirement
 
 Template status: `CANONICAL`  
-Framework compatibility: `1.1.1`
+Template version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
-## Identity
+## Identity / traceability
 
-- Reference:
+- Requirement ID: `REQ-<n>`
 - Owner:
+- Process: `AGENTFLOW`
+- Phase: `REQUIREMENTS`
 - Status: `REQUIREMENT_ANALYSIS | REQUIREMENT_READY_FOR_APPROVAL | REQUIREMENT_APPROVED | REQUIREMENT_CHANGES_REQUIRED | REQUIREMENT_DEFERRED | REQUIREMENT_REJECTED`
 
 ## Problem / Need
 
-What problem is being solved?
-
 ## Affected user or process
 
-Who or what is affected?
-
 ## Desired outcome
-
-What result must exist when this requirement is satisfied?
 
 ## Scope
 
@@ -52,7 +49,7 @@ Each criterion should be individually testable or objectively verifiable.
 Expected token:
 
 ```text
-APPROVE_REQUIREMENT <Reference>
+APPROVE_REQUIREMENT <Requirement ID>
 ```
 
 Durable approval record:
