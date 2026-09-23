@@ -1,17 +1,29 @@
 # Independent Review
 
 Template status: `CANONICAL`  
-Framework compatibility: `1.1.1`
+Template version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
-## Identity
+## Identity / traceability
 
-- Review reference:
-- ATC:
-- Exact candidate ID:
-- Candidate source / PR / commit:
+- Review ID: `REV-<atc>-<seq>`
+- Parent ATC:
 - Evidence Bundle:
-- Reviewer:
+- Exact reviewed candidate ID:
+- Candidate source / PR / change reference:
 - Durable review record reference:
+
+## Reviewer identity / independence
+
+- Reviewer:
+- Actor type: `HUMAN | AI | HYBRID`
+- Agent/tool:
+- Model/version:
+- Session/run reference:
+- Independence level: `IR1_FRESH_CONTEXT | IR2_DISTINCT_REVIEWER | IR3_ORGANIZATIONAL`
+- Project-required minimum:
+
+`IR0_SELF` is not a valid Independent Review.
 
 ## Review rule
 
@@ -19,7 +31,17 @@ Review the exact implementation candidate against the exact approved ATC and the
 
 Do not modify the implementation during this review.
 
-This verdict is valid **only** for the exact candidate ID above. Any implementation mutation creates a different candidate and invalidates this verdict for promotion.
+This verdict is valid only for the exact candidate ID above.
+
+## Evidence sufficiency
+
+For each mandatory ATC check verify:
+
+- evidence class is ARTIFACT or REPRODUCIBLE;
+- stable evidence reference is present;
+- result supports the claimed acceptance outcome.
+
+If any mandatory check is supported only by ATTESTED evidence, verdict must be `REVIEW_BLOCKED`.
 
 ## Contract conformance
 
@@ -29,11 +51,11 @@ This verdict is valid **only** for the exact candidate ID above. Any implementat
 | Scope | PASS / FAIL / BLOCKED | |
 | Out of scope preserved | PASS / FAIL / BLOCKED | |
 | Acceptance criteria | PASS / FAIL / BLOCKED | |
-| Required tests | PASS / FAIL / BLOCKED | |
+| Mandatory checks / evidence class | PASS / FAIL / BLOCKED | |
 | Architecture compliance | PASS / FAIL / BLOCKED | |
 | Security/privacy constraints | PASS / FAIL / BLOCKED | |
-| Evidence completeness | PASS / FAIL / BLOCKED | |
 | Candidate identity verified | PASS / FAIL / BLOCKED | |
+| Review independence satisfied | PASS / FAIL / BLOCKED | |
 
 ## Findings
 
@@ -52,10 +74,6 @@ Choose exactly one:
 - `REVIEW_PASS`
 - `REVIEW_FAIL`
 - `REVIEW_BLOCKED`
-
-Use `REVIEW_FAIL` for demonstrated non-conformance/defect.
-
-Use `REVIEW_BLOCKED` when required validation cannot be completed because evidence, access, environment, or dependency is missing.
 
 ## Invalidation rule
 
