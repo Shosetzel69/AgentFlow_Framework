@@ -1,6 +1,6 @@
 # AgentFlow Bootstrap Procedure
 
-Version: `1.1.0`
+Version: `1.1.1`
 Status: `CANONICAL`
 Applies to: new AgentFlow adoption
 
@@ -311,7 +311,7 @@ Example:
 ```yaml
 framework:
   name: AgentFlow
-  version: "1.1.0"
+  version: "1.1.1"
 
 project:
   name: "example-project"
