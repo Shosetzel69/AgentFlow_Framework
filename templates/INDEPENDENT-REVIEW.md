@@ -1,16 +1,25 @@
 # Independent Review
 
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
 ## Identity
 
 - Review reference:
 - ATC:
-- Candidate / PR / commit:
+- Exact candidate ID:
+- Candidate source / PR / commit:
 - Evidence Bundle:
 - Reviewer:
+- Durable review record reference:
 
 ## Review rule
 
-Review the exact implementation against the exact approved ATC and Evidence Bundle. Do not modify the implementation during this review.
+Review the exact implementation candidate against the exact approved ATC and the Evidence Bundle for that same candidate.
+
+Do not modify the implementation during this review.
+
+This verdict is valid **only** for the exact candidate ID above. Any implementation mutation creates a different candidate and invalidates this verdict for promotion.
 
 ## Contract conformance
 
@@ -24,6 +33,7 @@ Review the exact implementation against the exact approved ATC and Evidence Bund
 | Architecture compliance | PASS / FAIL / BLOCKED | |
 | Security/privacy constraints | PASS / FAIL / BLOCKED | |
 | Evidence completeness | PASS / FAIL / BLOCKED | |
+| Candidate identity verified | PASS / FAIL / BLOCKED | |
 
 ## Findings
 
@@ -46,3 +56,12 @@ Choose exactly one:
 Use `REVIEW_FAIL` for demonstrated non-conformance/defect.
 
 Use `REVIEW_BLOCKED` when required validation cannot be completed because evidence, access, environment, or dependency is missing.
+
+## Invalidation rule
+
+If implementation content changes after this verdict:
+
+- retain this record as history;
+- establish the new candidate identity;
+- produce/update evidence for that candidate;
+- perform a new Independent Review.
