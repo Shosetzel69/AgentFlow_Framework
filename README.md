@@ -1,31 +1,29 @@
 # AgentFlow Delivery Framework — Independent Kit
 
-Version: `1.1.0`
+Version: `1.1.1`  
 Status: `REFERENCE CORE`
 
 ## Purpose
 
 AgentFlow is a lightweight software-delivery framework for projects where AI agents participate in requirements, architecture, implementation, review, testing, documentation, and release work.
 
-The framework is designed to provide **high execution autonomy inside explicit decision boundaries**. It separates:
+Its purpose is to preserve:
 
-- what must be decided by a human owner or authorized approver;
-- what an AI agent may analyze;
-- what an AI agent may execute;
-- what evidence must be produced;
-- how implementation is independently reviewed;
-- how one immutable candidate moves from DEV to TEST to PROD.
+- **continuity** across chats, agents, and sessions;
+- **authority** over material decisions and execution;
+- **traceability** from Requirement to production evidence.
 
-The framework is deliberately tool-neutral. GitHub, GitLab, Azure DevOps, Jira, Cloudflare, AWS, GCP, Azure, PostgreSQL, and specific AI products are adapters, not part of the Core.
+The framework is tool-neutral. Source-control platforms, issue trackers, cloud providers, databases, AI products, and CI/CD systems are Project Adapter concerns rather than Core dependencies.
 
 ## Start here
 
-For framework use:
+For framework adoption:
 
-1. read `GOVERNANCE.md`;
-2. read `AGENTFLOW.md`;
-3. use `BOOTSTRAP-PROCEDURE.md` for a new target project;
-4. generate a Project Adapter from `templates/PROJECT-ADAPTER.md`.
+1. read `GOVERNANCE.md` — **single normative end-to-end process definition**;
+2. read `AGENTFLOW.md` — analysis/execution/evidence/review operational rules;
+3. read `DELIVERY-LIFECYCLE.md` — release promotion rules;
+4. use `BOOTSTRAP-PROCEDURE.md`;
+5. generate a Project Adapter from `templates/PROJECT-ADAPTER.md`.
 
 For framework development or a fresh AI session:
 
@@ -33,7 +31,7 @@ For framework development or a fresh AI session:
 2. read `docs/design/ORIGIN-AND-DESIGN-INTENT.md`;
 3. load only the Core document relevant to the current task.
 
-See `docs/INDEX.md` for the documentation map.
+The **canonical kit inventory** is `KIT-MANIFEST.md`. Do not treat README examples or translated guidance as an alternative inventory or process definition.
 
 ## Core principles
 
@@ -44,97 +42,48 @@ See `docs/INDEX.md` for the documentation map.
 5. **Review independently.**
 6. **Promote one immutable candidate.**
 
-## Kit structure
-
-```text
-AgentFlow_Framework/
-├── README.md
-├── VERSION
-├── FRAMEWORK-CONFIG.md
-├── BOOTSTRAP-PROCEDURE.md
-├── GOVERNANCE.md
-├── AGENTFLOW.md
-├── DELIVERY-LIFECYCLE.md
-├── DOCUMENTATION-POLICY.md
-├── AI-EXECUTION-RULES.md
-├── ADOPTION-GUIDE.md
-├── agentflow.config.example.yaml
-├── templates/
-├── examples/
-└── docs/
-```
-
 ## Bootstrap a new project
 
-Start with `BOOTSTRAP-PROCEDURE.md`. Bootstrap inspects the target project in read-only mode, builds the source-of-truth and gap maps, then proposes `PROJECT-ADAPTER.md`, `agentflow.config.yaml`, and `BOOTSTRAP-REPORT.md`.
+Start with `BOOTSTRAP-PROCEDURE.md`.
 
-Activate/persist the framework only after explicit owner approval.
+Bootstrap inspects the target project in read-only mode, builds the source-of-truth and gap maps, and proposes:
+
+- `PROJECT-ADAPTER.md`;
+- `agentflow.config.yaml`;
+- `BOOTSTRAP-REPORT.md`.
+
+Activation requires explicit owner approval according to the configured durable approval record.
 
 ## Minimum adoption
 
-For a small project, adopt only:
+For a small project, the practical minimum is:
 
-- `GOVERNANCE.md`
-- `AGENTFLOW.md`
-- `DELIVERY-LIFECYCLE.md`
-- `AI-EXECUTION-RULES.md`
-- `templates/AGENT-TASK-CONTRACT.md`
-- `templates/EVIDENCE-BUNDLE.md`
-- `templates/INDEPENDENT-REVIEW.md`
+- `GOVERNANCE.md`;
+- `AGENTFLOW.md`;
+- `DELIVERY-LIFECYCLE.md`;
+- `AI-EXECUTION-RULES.md`;
+- `templates/REQUIREMENT.md`;
+- `templates/AGENT-TASK-CONTRACT.md`;
+- `templates/EVIDENCE-BUNDLE.md`;
+- `templates/INDEPENDENT-REVIEW.md`;
+- a project-specific `PROJECT-ADAPTER.md`.
 
-Then create one project-specific adapter from `templates/PROJECT-ADAPTER.md`.
-
-## Recommended flow
-
-```text
-IDEA
-  ↓
-REQUIREMENT ANALYSIS
-  ↓
-REQUIREMENT APPROVAL
-  ↓
-ARCHITECTURE GATE, if triggered
-  ↓
-DEVELOPMENT ANALYSIS
-  ↓
-TASK CONTRACT
-  ↓
-EXPLICIT TASK APPROVAL
-  ↓
-IMPLEMENTATION
-  ↓
-EVIDENCE BUNDLE
-  ↓
-INDEPENDENT REVIEW
-  ↓
-DEV PASS
-  ↓
-CANDIDATE FREEZE
-  ↓
-TEST PASS
-  ↓
-PROD GO
-  ↓
-PROD DEPLOY
-  ↓
-SMOKE PASS
-  ↓
-DONE
-```
+The exact normative process sequence and approval tokens are intentionally not duplicated here; see `GOVERNANCE.md`.
 
 ## Framework Core vs Project Adapter
 
 ### Core
 
-Keep these concepts stable across projects:
+Keep stable across projects:
 
-- explicit approvals;
+- explicit scoped approvals;
+- durable approval requirement;
 - Architecture Delta Check;
 - Development Analysis;
 - Agent Task Contracts;
 - retry limits and stop conditions;
 - Evidence Bundles;
-- independent review;
+- candidate-bound Independent Review;
 - immutable candidate identity;
 - independent TEST;
 - rollback-before-PROD;
@@ -148,26 +97,48 @@ Configure per project:
 
 - source-control platform;
 - issue tracker;
+- durable approval record location;
 - branch strategy;
 - CI/CD engine;
 - environments;
 - deployment platform;
 - test executors;
 - artifact identity mechanism;
-- approval syntax;
+- approval token mapping;
 - architecture triggers specific to the system;
 - security/compliance gates;
 - owner vs multi-approver model.
 
+## Applicability
+
+AgentFlow works best when the target project has:
+
+- a stable, inspectable project/repository state;
+- a durable work/approval record;
+- an immutable or equivalently verifiable candidate identity;
+- a review mechanism;
+- distinguishable DEV/TEST/PROD or equivalent promotion stages.
+
+Projects that cannot establish candidate identity or durable approvals should treat bootstrap as `BLOCKED` until an equivalent control is defined.
+
+## Versioning and compatibility
+
+- Current version: see `VERSION`.
+- Release changes: `CHANGELOG.md`.
+- Consumer compatibility/adoption guidance: `COMPATIBILITY.md`.
+- Canonical shipped-file inventory: `KIT-MANIFEST.md`.
+
+Framework upgrades do **not** propagate automatically into consuming projects.
+
 ## Design intent
 
-The framework originated from a practical continuity problem: software work spread across multiple AI chats becomes difficult to resume safely.
+AgentFlow originated from a practical continuity problem: software work spread across multiple AI chats becomes difficult to resume safely.
 
-The working design principle is:
+Working principle:
 
 > No information required for controlled continuation of the project should exist exclusively in a conversation.
 
-This principle and the proposed Cold Start Test are documented in `docs/design/ORIGIN-AND-DESIGN-INTENT.md`. They are design records; changes to Core should still follow the framework's own decision process.
+See `docs/design/ORIGIN-AND-DESIGN-INTENT.md`.
 
 ## Non-goals
 
@@ -181,7 +152,7 @@ AgentFlow is not inherently:
 - a specific CI/CD platform;
 - an AI vendor integration.
 
-Use only the controls justified by project risk and scale.
+Use only controls justified by project risk and scale.
 
 ## License
 
