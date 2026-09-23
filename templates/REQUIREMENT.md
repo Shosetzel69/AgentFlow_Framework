@@ -1,5 +1,8 @@
 # Requirement
 
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
 ## Identity
 
 - Reference:
@@ -28,6 +31,8 @@ What result must exist when this requirement is satisfied?
 
 ## Acceptance criteria
 
+Each criterion should be individually testable or objectively verifiable.
+
 - [ ] 
 
 ## Product invariants
@@ -44,6 +49,15 @@ What result must exist when this requirement is satisfied?
 
 ## Approval
 
+Expected token:
+
+```text
+APPROVE_REQUIREMENT <Reference>
+```
+
+Durable approval record:
+
 - Decision:
 - Approved by:
-- Date:
+- Timestamp:
+- Approval record reference:
