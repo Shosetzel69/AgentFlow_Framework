@@ -6,17 +6,20 @@
 - [Changelog](../CHANGELOG.md)
 - [Compatibility](../COMPATIBILITY.md)
 - [Canonical Kit Manifest](../KIT-MANIFEST.md)
+- [Core / Template Version Matrix](reference/CORE-VERSION-MATRIX.md)
 
 ## Framework Core
 
-- [Governance](../GOVERNANCE.md) — single normative end-to-end process definition
+- [Governance](../GOVERNANCE.md) — single normative end-to-end process
 - [Operating Contract](../AGENTFLOW.md)
 - [Delivery Lifecycle](../DELIVERY-LIFECYCLE.md)
 - [AI Execution Rules](../AI-EXECUTION-RULES.md)
+- [Artifact Identity & Traceability](../ARTIFACT-TRACEABILITY.md)
+- [Metrics Catalogue](../METRICS.md)
 - [Documentation Policy](../DOCUMENTATION-POLICY.md)
 - [Framework Configuration](../FRAMEWORK-CONFIG.md)
 - [Bootstrap Procedure](../BOOTSTRAP-PROCEDURE.md)
-- [Adoption Guide](../ADOPTION-GUIDE.md) — non-normative adoption guidance
+- [Adoption Guide](../ADOPTION-GUIDE.md) — non-normative
 
 ## Templates
 
@@ -25,9 +28,11 @@ See [templates](../templates/):
 - Requirement
 - Development Transfer
 - Architecture Decision
+- Development Analysis
 - Agent Task Contract
 - Evidence Bundle
 - Independent Review
+- Candidate Manifest
 - Executable Task — deprecated compatibility view
 - Release Record
 - Project Adapter
