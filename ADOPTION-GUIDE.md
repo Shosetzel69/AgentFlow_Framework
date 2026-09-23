@@ -1,6 +1,9 @@
 # AgentFlow Adoption Guide
 
-> For a project-specific guided adoption, run `BOOTSTRAP-PROCEDURE.md` first. It produces the proposed Project Adapter, configuration, gap map and adoption verdict.
+Status: `NON-NORMATIVE ADOPTION GUIDE`  
+Framework compatibility: `1.1.1`
+
+> For a project-specific guided adoption, run `BOOTSTRAP-PROCEDURE.md` first. This guide does not redefine the normative AgentFlow process; use `GOVERNANCE.md` for process/status/approval rules.
 
 ## 1. Greenfield project
 
@@ -81,7 +84,8 @@ Before the first AgentFlow task, verify:
 - default branch protected;
 - DEV/TEST/PROD mapping defined;
 - candidate identity defined;
-- task approval token defined;
+- Requirement and task approval tokens mapped;
+- durable approval record location defined;
 - PROD approval token defined;
 - rollback policy defined;
 - required evidence defined;
