@@ -1,31 +1,37 @@
 # AgentFlow Governance
 
-Status: `REFERENCE CORE`
-Version: `1.0.0`
+Status: `REFERENCE CORE`  
+Version: `1.1.1`
 
 ## 1. Decision model
 
 The project has one or more authorized human approvers. AI agents may analyze, recommend, execute approved work, and provide evidence, but they do not silently assume authority over material scope, architecture, security, privacy, cost, or production release decisions.
 
-Nominal flow:
-
-```text
-Ideas / Requirements
-→ Requirement Analysis
-→ explicit Requirement Approval
-→ Architecture Gate, when triggered
-→ Development Analysis
-→ Agent Task Contract
-→ explicit Task Contract Approval
-→ Implementation
-→ Evidence
-→ Independent Review
-→ DEV → TEST → PROD lifecycle
-```
-
 There is no automatic transition from discussion to implementation.
 
-## 2. Process modes
+## 2. Normative process definition
+
+This section is the **single normative end-to-end process definition** for AgentFlow. Other documents may explain individual phases or adoption procedures, but they do not redefine the process sequence.
+
+| Step | Phase / outcome | Required authority or condition |
+|---|---|---|
+| 1 | REQUIREMENTS | Requirement is analyzed and made ready for approval |
+| 2 | REQUIREMENT_APPROVED | `APPROVE_REQUIREMENT <ref>` is durably recorded |
+| 3 | ARCHITECTURE, when triggered | Material architecture questions are decided before executable planning continues |
+| 4 | DEVELOPMENT_ANALYSIS | Approved intent is converted into implementable slices and proposed ATCs |
+| 5 | TASK_CONTRACT | Exact ATC is proposed and approved |
+| 6 | IMPLEMENTATION | `APPROVE_TASK_CONTRACT <ref>` is durably recorded for the exact ATC |
+| 7 | EVIDENCE | Executor produces an Evidence Bundle for the exact implementation candidate |
+| 8 | REVIEW | Independent Review returns a verdict bound to that exact candidate identity |
+| 9 | DEV / CANDIDATE | DEV verification passes and the exact reviewed candidate is frozen |
+| 10 | TEST | TEST validates the exact frozen candidate |
+| 11 | RELEASE / PROD_GATE | Rollback is ready and `PROD_GO <candidate-ref>` is durably recorded |
+| 12 | PROD_DEPLOY / PROD_SMOKE | Exact approved candidate is deployed and smoke-validated |
+| 13 | CLOSURE | Release record is complete and work closes |
+
+A project may use `APPROVE_TRANSFER <ref>` as an explicit boundary between approved Requirement and Development Analysis. If enabled, it is an additional control but does not replace Requirement Approval or Task Contract Approval.
+
+## 3. Process modes
 
 ### AGENTFLOW
 
@@ -44,7 +50,7 @@ Rules:
 
 If no legacy transition exists, remove `LEGACY-ADAPTED` from the project adapter.
 
-## 3. Canonical work-item header
+## 4. Canonical work-item header
 
 ```text
 Process: AGENTFLOW | LEGACY-ADAPTED | INHERIT-PARENT
@@ -55,7 +61,7 @@ Blocked by: <reference or NONE>
 
 The current canonical header takes precedence over historical wording elsewhere in the work item.
 
-## 4. Canonical phases and statuses
+## 5. Canonical phases and statuses
 
 | Phase | Canonical statuses |
 |---|---|
@@ -77,29 +83,46 @@ The current canonical header takes precedence over historical wording elsewhere 
 
 `BLOCKED` alone is not a canonical status. Use the phase-specific status and `Blocked by`.
 
-## 5. Explicit approvals
+## 6. Explicit approvals
 
 Approvals are scoped and do not propagate to later gates.
 
-Recommended tokens:
+Canonical tokens:
 
 | Token | Authorizes | Does not authorize |
 |---|---|---|
-| `APPROVE_TRANSFER <ref>` | entry into Development Analysis | implementation, TEST, PROD |
+| `APPROVE_REQUIREMENT <ref>` | approval of the exact Requirement | architecture choice, implementation, TEST, PROD |
+| `APPROVE_TRANSFER <ref>` | entry into Development Analysis when the project enables a transfer gate | implementation, TEST, PROD |
 | `APPROVE_ARCHITECTURE <ref>` | the referenced architecture decision | implementation or release |
 | `APPROVE_TASK_CONTRACT <ref>` | implementation of that exact ATC | other ATCs, scope expansion, TEST, PROD |
 | `PROD_GO <candidate-ref>` | promotion of the exact approved candidate | a changed candidate or new production mutation |
 
 Generic phrases such as `continue`, `go`, `merge`, `looks good`, or `ok` do not replace a required explicit approval token.
 
-## 6. Source-of-truth hierarchy
+### 6.1 Durable approval record
+
+An approval changes workflow authorization only when it is recorded in the project-configured **durable approval record**.
+
+A valid approval record contains at least:
+
+- approval token;
+- exact approved reference;
+- approver identity;
+- recorded timestamp;
+- durable record reference or URL/ID.
+
+A transient chat message may be the source of an owner decision, but the workflow must not transition on that approval until it is copied or mirrored into the configured durable record.
+
+The Project Adapter defines the durable approval system/location. Core does not require a specific issue tracker or source-control platform.
+
+## 7. Source-of-truth hierarchy
 
 Each project must define canonical sources and their precedence.
 
 Recommended model:
 
 - Architecture → technical boundaries and approved target structure;
-- Governance → decision and control rules;
+- Governance → decision, phase/status and approval rules;
 - Delivery Lifecycle → DEV/TEST/PROD promotion rules;
 - Requirements → approved product intent;
 - Data/API contracts → stable interfaces;
@@ -109,7 +132,7 @@ Recommended model:
 
 Conversation history, AI memory, and local copies are context, not technical source of truth.
 
-## 7. Architecture policy
+## 8. Architecture policy
 
 Material architecture changes require an Architecture Gate and explicit approval before implementation.
 
@@ -125,7 +148,7 @@ Typical triggers:
 - security/privacy/secrets model;
 - material cost or portability/exit impact.
 
-## 8. Implementation Preservation Rule
+## 9. Implementation Preservation Rule
 
 Approval of a feature or fix authorizes only the changes required for the approved outcome.
 
@@ -142,28 +165,30 @@ It does not implicitly authorize changes to:
 
 A materially different implementation mechanism is a separate change request unless already covered by the approved Architecture Gate.
 
-## 9. No Opportunistic Refactoring
+## 10. No Opportunistic Refactoring
 
 Do not use an approved feature or bugfix as authority for unrelated cleanup, redesign, reorganization, or refactoring.
 
 If a larger refactor is necessary to implement the approved change safely, document its necessity and impact and obtain approval before execution.
 
-## 10. Definition of Done
+## 11. Definition of Done
 
 A change is not complete merely because code exists.
 
 For work requiring production release, DONE normally requires:
 
+- approved Requirement;
 - approved scope;
+- approved ATC;
 - implementation complete;
 - mandatory tests pass;
 - Evidence Bundle complete;
-- Independent Review pass;
+- Independent Review pass bound to the exact candidate that proceeds;
 - DEV pass;
 - immutable candidate frozen;
 - TEST pass on that exact candidate;
 - rollback prepared;
-- explicit production authorization;
+- explicit production authorization for that exact candidate;
 - exact candidate deployed;
 - smoke pass;
 - material documentation updated;
