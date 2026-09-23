@@ -1,6 +1,12 @@
 # Architecture Decision Record
 
-Status: `PROPOSED | ACCEPTED | SUPERSEDED`
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
+Phase: `ARCHITECTURE`  
+Status: `ARCHITECTURE_REVIEW | ARCHITECTURE_READY_FOR_APPROVAL | ARCHITECTURE_APPROVED | ARCHITECTURE_CHANGES_REQUIRED | ARCHITECTURE_BLOCKED`  
+Record lifecycle: `CURRENT | SUPERSEDED`
+
 Decision reference:
 Date:
 Decision owner:
@@ -84,5 +90,11 @@ A material `UNKNOWN` blocks final architecture approval.
 Expected token:
 
 ```text
-APPROVE_ARCHITECTURE <ref>
+APPROVE_ARCHITECTURE <Decision reference>
 ```
+
+Durable approval record:
+
+- Approved by:
+- Timestamp:
+- Approval record reference:
