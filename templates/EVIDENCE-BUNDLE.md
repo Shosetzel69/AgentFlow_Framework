@@ -1,10 +1,14 @@
 # Evidence Bundle
 
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
 ## Identity
 
 - ATC:
 - Implementation reference:
-- Candidate / PR / commit:
+- Exact candidate ID:
+- Candidate branch / PR / commit:
 - Executor:
 
 ## Files / components changed
@@ -47,3 +51,5 @@
 ## Verdict
 
 `EVIDENCE_READY | EVIDENCE_INCOMPLETE | IMPLEMENTATION_BLOCKED | IMPLEMENTATION_FAILED`
+
+This bundle describes only the exact candidate ID above. If implementation content changes, update/create evidence for the new candidate before review.
