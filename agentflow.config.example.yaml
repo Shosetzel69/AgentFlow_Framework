@@ -1,62 +1,152 @@
 framework:
   name: AgentFlow
-  version: "1.1.1"
+  version: "1.2.0"
 
 project:
   name: "<project-name>"
+  namespace: "<stable-project-namespace>"
   process: AGENTFLOW
   legacy_transition: false
-  compatible_framework: ">=1.1.1,<1.2.0"
+  compatible_framework: ">=1.2.0,<2.0.0"
+  delivery_model: "<git|artifact|low-code|saas-config|other>"
+  last_validated: "<YYYY-MM-DD>"
+  validated_framework_version: "1.2.0"
+
+records:
+  system: "<issue-tracker|change-system|other>"
+  artifact_id_mapping: "<native-id-rule-or-AgentFlow-pattern>"
+  durable_approval_location: "<project-specific-path-or-reference>"
+  review_record_location: "<project-specific-path-or-reference>"
+  candidate_manifest_location: "<project-specific-path-or-reference>"
 
 approval:
   owner_model: single_owner # single_owner | multi_approver
-  durable_record:
-    system: "<issue-tracker|change-system|other>"
-    location: "<project-specific-path-or-reference>"
   tokens:
+    bootstrap: "APPROVE_AGENTFLOW_BOOTSTRAP"
     requirement: "APPROVE_REQUIREMENT"
     transfer: "APPROVE_TRANSFER"
     architecture: "APPROVE_ARCHITECTURE"
     task_contract: "APPROVE_TASK_CONTRACT"
+    prod_data_use: "APPROVE_PROD_DATA_USE"
+    forward_fix: "APPROVE_FORWARD_FIX"
     prod: "PROD_GO"
+
+gates:
+  bootstrap_activation_required: true
+  requirement_approval_required: true
+  transfer_required: false
+  architecture_gate_on_trigger: true
+  task_contract_approval_required: true
+  evidence_required: true
+  independent_review_required: true
+  dev_verification_required: true
+  candidate_manifest_required: true
+  independent_test_required: true
+  prod_go_required: true
+  prod_smoke_required: true
+
+architecture:
+  project_triggers: []
 
 environments:
   dev: "<dev-environment>"
   test: "<test-environment>"
   prod: "<prod-environment>"
 
-source_control:
-  provider: "<github|gitlab|azure-devops|other>"
-  protected_branch: "main"
-  direct_write_protected_branch: false
-  candidate_identity: "commit_sha"
-
-issue_tracking:
-  provider: "<github-issues|jira|linear|azure-boards|other>"
+access:
+  by_phase:
+    requirements:
+      environments: []
+      credential_role: "<none-or-read-role>"
+      prod_mutation: false
+    architecture:
+      environments: []
+      credential_role: "<none-or-read-role>"
+      prod_mutation: false
+    development_analysis:
+      environments: ["<dev-read>"]
+      credential_role: "<read-role>"
+      prod_mutation: false
+    implementation:
+      environments: ["<dev>"]
+      credential_role: "<dev-executor-role>"
+      prod_mutation: false
+    evidence:
+      environments: ["<dev-read>"]
+      credential_role: "<evidence-read-role>"
+      prod_mutation: false
+    review:
+      environments: ["<dev-read>"]
+      credential_role: "<review-read-role>"
+      prod_mutation: false
+    test:
+      environments: ["<test>"]
+      credential_role: "<test-role>"
+      prod_mutation: false
+    prod_deploy:
+      environments: ["<prod>"]
+      credential_role: "<prod-deploy-role>"
+      prod_mutation: true
 
 execution:
   default_retry_limit: 2
-  independent_review_required: true
-  review_candidate_binding_required: true
-  test_independence_required: true
+  remediation_cycle_budget: 2
+  single_active_executor_per_atc: true
+  handoff_record_required: true
+
+evidence:
+  mandatory_check_min_class: ARTIFACT # ARTIFACT | REPRODUCIBLE
+  reproducibility_field_required: true
+
+review:
+  independence_level: IR1_FRESH_CONTEXT # IR1 | IR2 | IR3
+  candidate_binding_required: true
 
 release:
+  candidate_identity: "<commit_sha|artifact_hash|snapshot_id|other>"
+  candidate_manifest_required: true
   rollback_required_before_prod: true
   explicit_prod_go_required: true
   exact_candidate_promotion_required: true
+  forward_fix:
+    enabled: true
+    explicit_approval_required: true
+    reconciliation_required: true
   hotfix:
     may_reduce_test_breadth: true
     may_skip_requirement_approval: false
     may_skip_atc_approval: false
     may_skip_evidence: false
     may_skip_independent_review: false
-    may_skip_candidate_identity: false
+    may_skip_candidate_manifest: false
     may_skip_prod_go: false
+
+data_handling:
+  production_data_in_nonprod:
+    allowed_by_default: false
+    explicit_approval_required: true
+    minimisation_or_anonymisation_required: true
+    retention_condition_required: true
+
+revalidation:
+  triggers:
+    - environment_topology_change
+    - source_control_or_change_system_change
+    - ci_cd_or_deployment_change
+    - owner_or_approval_model_change
+    - approval_record_location_change
+    - candidate_identity_mechanism_change
+    - phase_access_boundary_change
+    - incompatible_framework_version
+  gaps_require_owner: true
+  gaps_require_closure_condition: true
+
+metrics:
+  catalogue: "METRICS.md"
+  collection: "<manual|project-specific-tooling|none>"
+  gate_response_expectations: {}
 
 documentation:
   architecture: "<path-or-system>"
-  governance: "GOVERNANCE.md"
-  lifecycle: "DELIVERY-LIFECYCLE.md"
-  ai_rules: "AI-EXECUTION-RULES.md"
   requirements: "<path-or-system>"
   contracts: "<path-or-system>"
