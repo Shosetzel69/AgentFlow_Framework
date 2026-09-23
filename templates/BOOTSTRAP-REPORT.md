@@ -1,12 +1,14 @@
 # AgentFlow Bootstrap Report
 
 Template status: `CANONICAL`  
-Framework compatibility: `1.1.1`
+Template version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
 Project:
 Bootstrap date:
-Bootstrap mode: `GREENFIELD | EXISTING`
-Framework version: `1.1.1`
+Bootstrap mode: `GREENFIELD | EXISTING | REVALIDATION`
+Framework version: `1.2.0`
+Last validated:
 Executor:
 
 ## 1. Verdict
@@ -15,19 +17,32 @@ Executor:
 
 Reason:
 
-## 2. Evidence baseline
+## 2. Applicability preconditions
 
-- Repository/repositories:
-- Default/protected branch:
-- Issue tracker:
+| Precondition | Result | Evidence / mapping |
+|---|---|---|
+| Durable project/change record | PASS / FAIL / DECIDE | |
+| Durable approval record | PASS / FAIL / DECIDE | |
+| Immutable/equivalent candidate identity | PASS / FAIL / DECIDE | |
+| Change-review mechanism | PASS / FAIL / DECIDE | |
+| Inspectable delivery state/tooling | PASS / FAIL / DECIDE | |
+
+Any unresolved FAIL/DECIDE that prevents an equivalent control yields `BLOCKED`.
+
+## 3. Evidence baseline
+
+- Repository/change systems:
+- Default/protected target:
+- Issue/work tracker:
 - CI/CD:
 - Environments:
 - Architecture source:
 - Requirements source:
 - Durable approval record:
+- Candidate identity mechanism:
 - Release/deployment source:
 
-## 3. Source-of-truth map
+## 4. Source-of-truth map
 
 | Subject | Current source | Status | Notes |
 |---|---|---|---|
@@ -36,80 +51,89 @@ Reason:
 | Data/API contracts | | | |
 | Delivery process | | | |
 | Approval records | | | |
+| Artifact identity | | | |
 | Release/deploy | | | |
 | AI execution rules | | | |
 | Operations | | | |
 
-## 4. Environment map
+## 5. Environment / access map
 
-| AgentFlow role | Project environment | Confidence / gap |
-|---|---|---|
-| DEV | | |
-| TEST | | |
-| PROD | | |
+| AgentFlow phase/role | Project environment | Credential/access role | PROD mutation |
+|---|---|---|---|
+| IMPLEMENTATION | | | NO |
+| REVIEW | | | NO |
+| TEST | | | NO |
+| PROD_DEPLOY | | | YES / NO |
 
-## 5. Gap matrix
+## 6. Gap matrix
 
 Use: `EXISTS | ADAPT | ADD | DECIDE | BLOCKED`.
 
 | AgentFlow control | Current project | Classification | Required action |
 |---|---|---|---|
+| Bootstrap approval | | | |
 | Requirement approval | | | |
 | Durable approval record | | | |
 | Architecture Gate | | | |
 | Development Analysis | | | |
 | Agent Task Contract | | | |
-| Explicit task approval | | | |
-| Evidence Bundle | | | |
-| Candidate-bound Independent Review | | | |
-| DEV verification | | | |
+| Retry + remediation budget | | | |
+| Executor provenance/handoff | | | |
+| Evidence class control | | | |
+| Review independence level | | | |
+| Candidate-bound review | | | |
+| Candidate Manifest | | | |
 | Immutable candidate | | | |
 | Independent TEST | | | |
+| Rollback / forward-fix | | | |
 | PROD GO | | | |
-| Rollback | | | |
-| Release Record | | | |
-| Source-of-truth hierarchy | | | |
+| Production-data handling | | | |
+| Phase access boundaries | | | |
+| Artifact identity/parent links | | | |
 | Progressive context | | | |
 
-## 6. Existing-work transition
+## 7. Outstanding gaps
 
-- Legacy transition required: YES / NO
-- Materially started work:
-- Proposed handling:
-- Retirement condition:
+| Gap | Owner | Temporary accepted condition | Closure condition | Target/revalidation trigger |
+|---|---|---|---|---|
+| | | | | |
 
-## 7. Generated artifacts
+No owner/closure condition => verdict cannot be `READY_WITH_GAPS`.
+
+## 8. Generated artifacts
 
 - PROJECT-ADAPTER.md: GENERATED / BLOCKED
 - agentflow.config.yaml: GENERATED / BLOCKED
 
-## 8. Decisions required
+## 9. Revalidation
+
+- Validated framework version:
+- Last validated:
+- Trigger causing this validation:
+- Next revalidation triggers:
+
+## 10. Adapter/config consistency
+
+- Result: PASS / BLOCKED
+- Mismatches:
+
+## 11. Decisions required
 
 1.
 
-## 9. Assumptions / unknowns
+## 12. Assumptions / risks
 
 - 
 
-## 10. Risks
-
-- 
-
-## 11. Minimum adoption plan
-
-1.
-2.
-3.
-
-## 12. Mutations performed during bootstrap
+## 13. Mutations performed during bootstrap
 
 Expected default: `NONE`.
 
 - 
 
-## 13. Owner gate
+## 14. Owner gate
 
-Recommended command:
+Expected command:
 
 `APPROVE_AGENTFLOW_BOOTSTRAP <project-ref>`
 
