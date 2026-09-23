@@ -48,6 +48,7 @@ See [templates](../templates/):
 - [Maturity Assessment — RO, historical v1.1.0](reference/MATURITY-ASSESSMENT-RO.md)
 - [External Audit Template](audit/EXTERNAL-AUDIT-TEMPLATE.md)
 - [External Audit Report AF-AUDIT-2026-09-23-01](audit/reports/AF-AUDIT-2026-09-23-01.md) — audit of v1.1.0 baseline
+- [v1.2.0 Audit Remediation Ledger](audit/reports/AF-AUDIT-2026-09-23-01-REMEDIATION-v1.2.0.md) — implementation disposition, pending Independent Review
 - [Usage Guide — RO](reference/USAGE-GUIDE-RO.md) — non-normative
 
 ## Research
