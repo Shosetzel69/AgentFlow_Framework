@@ -24,7 +24,8 @@ Minimum input:
 
 - project/repository location;
 - project owner or authorized approver;
-- whether the project is `GREENFIELD` or `EXISTING`.
+- whether the project is `GREENFIELD` or `EXISTING`;
+- a durable system/location where scoped approvals can be recorded, or an explicit `DECIDE` gap if none exists.
 
 Useful optional input:
 
@@ -196,6 +197,7 @@ Minimum subjects:
 | Architecture | | |
 | Data/API contracts | | |
 | Delivery process | | |
+| Approval records | | |
 | Release/deploy procedure | | |
 | AI execution rules | | |
 | Operational runbooks | | |
@@ -218,6 +220,7 @@ Assess at minimum:
 ## Decision controls
 
 - requirement approval;
+- durable approval record for scoped approvals;
 - architecture gate;
 - task execution approval;
 - PROD authorization.
@@ -261,6 +264,7 @@ Produce a gap matrix:
 | AgentFlow control | Current project | Classification | Required action |
 |---|---|---|---|
 | Requirement approval | | | |
+| Durable approval record | | | |
 | Architecture gate | | | |
 | ATC/task contract | | | |
 | Evidence bundle | | | |
@@ -286,6 +290,7 @@ Rules:
 The adapter must define:
 
 - owner/approval model;
+- durable approval record system/location and stable reference format;
 - toolchain;
 - repository/branch rules;
 - environment mapping;
@@ -377,6 +382,7 @@ Prioritize gaps in this order:
 Before declaring bootstrap complete, verify:
 
 - every adapter value is verified, explicitly approved, or marked `UNKNOWN`;
+- the durable approval record is configured or explicitly marked as a blocking/decision gap;
 - no project-specific rule leaked into AgentFlow Core;
 - no existing active work was silently converted;
 - no infrastructure/product/runtime mutation occurred during read-only bootstrap;
@@ -405,6 +411,7 @@ Material contradictions result in `BLOCKED` until resolved.
 Use when:
 
 - Core can be mapped without material unresolved decisions;
+- a durable approval record is configured;
 - project adapter/config are complete enough for the first AgentFlow work item;
 - no safety-critical release control is missing or ambiguous.
 
@@ -538,6 +545,7 @@ Do not activate/persist the framework until explicit owner approval.
 
 - [ ] Mode selected: GREENFIELD / EXISTING
 - [ ] Owner/approval model identified
+- [ ] Durable approval record identified or explicitly tracked as a gap
 - [ ] Repository/project inventory complete
 - [ ] Toolchain identified
 - [ ] DEV/TEST/PROD mapping assessed
