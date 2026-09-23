@@ -45,7 +45,7 @@ See [templates](../templates/):
 
 ## Assessment / audit
 
-- [Maturity Assessment — RO](reference/MATURITY-ASSESSMENT-RO.md)
+- [Maturity Assessment — RO, historical v1.1.0](reference/MATURITY-ASSESSMENT-RO.md)
 - [External Audit Template](audit/EXTERNAL-AUDIT-TEMPLATE.md)
 - [External Audit Report AF-AUDIT-2026-09-23-01](audit/reports/AF-AUDIT-2026-09-23-01.md) — audit of v1.1.0 baseline
 - [Usage Guide — RO](reference/USAGE-GUIDE-RO.md) — non-normative
