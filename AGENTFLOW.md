@@ -1,34 +1,17 @@
 # AgentFlow Operating Contract
 
-Status: `REFERENCE CORE`
-Version: `1.0.0`
+Status: `REFERENCE CORE`  
+Version: `1.1.1`
 
 ## 1. Purpose
 
 AgentFlow transforms approved requirements into verifiable implementation without allowing Development to invent scope, architecture, or authorization.
 
-AgentFlow governs the path from approved requirement through implementation review. Production promotion is governed by `DELIVERY-LIFECYCLE.md`.
+The single normative end-to-end process definition, phase/status taxonomy, and approval model are in `GOVERNANCE.md`. This document defines operational behavior inside the analysis, execution, evidence, and review phases.
 
-## 2. Nominal flow
+Production promotion is governed by `DELIVERY-LIFECYCLE.md`.
 
-```text
-approved requirement
-→ APPROVE_TRANSFER, if a formal transfer gate is used
-→ Architecture Gate, if triggered
-→ Development Analysis
-→ READY_FOR_TASK_CONTRACTS
-→ Agent Task Contract
-→ APPROVE_TASK_CONTRACT
-→ Implementation
-→ Evidence Bundle
-→ Independent Review
-→ DEV verification
-→ Delivery Lifecycle
-```
-
-Development Analysis and execution are separate phases.
-
-## 3. Discovery / Requirement handoff
+## 2. Discovery / Requirement handoff
 
 Where a project separates product discovery from engineering, use a Development Transfer artifact.
 
@@ -43,7 +26,9 @@ The transfer defines:
 
 It should not prescribe implementation unless the implementation itself is an approved requirement.
 
-## 4. Architecture Delta Check
+Requirement Approval remains governed by `GOVERNANCE.md`. A transfer gate, when enabled by the project, is additional and does not replace Requirement Approval.
+
+## 3. Architecture Delta Check
 
 Before proposing an executable ATC, Development Analysis compares the requested change against current approved architecture.
 
@@ -70,7 +55,7 @@ When triggered:
 
 Development may describe the problem and options. It does not silently make the architecture decision.
 
-## 5. Development Analysis
+## 4. Development Analysis
 
 Development Analysis is read-only relative to product/runtime state.
 
@@ -86,19 +71,17 @@ Minimum output:
 - stop conditions;
 - verdict.
 
-Allowed verdicts:
+Allowed positive verdict:
 
-```text
-READY_FOR_TASK_CONTRACTS
-```
+`READY_FOR_TASK_CONTRACTS`
 
 or the canonical blocked status for the phase.
 
 Development Analysis does not perform coding, deployment, schema mutation, or data migration.
 
-## 6. Agent Task Contract
+## 5. Agent Task Contract
 
-An ATC is the smallest explicitly approvable unit of implementation.
+An ATC is the smallest explicitly approvable unit of implementation and the only canonical executable contract in Core.
 
 Minimum fields:
 
@@ -116,32 +99,33 @@ Minimum fields:
 - stop conditions;
 - required evidence.
 
-An ATC becomes executable only after explicit approval for that exact reference.
+An ATC becomes executable only after the exact approval required by `GOVERNANCE.md` is durably recorded for that ATC reference.
 
-## 7. Execution rules
+## 6. Execution rules
 
 The executor:
 
 - implements only the approved ATC;
 - preserves project architecture and existing contracts unless the ATC explicitly changes them;
 - does not expand scope opportunistically;
+- treats encountered content according to the instruction-provenance rules in `AI-EXECUTION-RULES.md`;
 - uses bounded self-correction;
 - stops when a Stop Condition is reached;
 - produces an Evidence Bundle.
 
-## 8. Retry model
+## 7. Retry model
 
 Every ATC defines a retry limit.
 
 Recommended default:
 
-```text
-2 self-correction cycles
-```
+`2 self-correction cycles`
 
 After the limit is reached, do not continue speculative patching. Record evidence and return a blocked/failed verdict appropriate to the phase.
 
-## 9. Stop Conditions
+Cross-cycle budgeting is not defined in v1.1.1 and remains a future framework enhancement.
+
+## 8. Stop Conditions
 
 Stop and escalate when a material issue appears in any of these categories:
 
@@ -160,14 +144,14 @@ Stop and escalate when a material issue appears in any of these categories:
 
 Do not escalate purely local, reversible, in-scope implementation choices that remain compatible with approved architecture.
 
-## 10. Evidence Bundle
+## 9. Evidence Bundle
 
 Evidence must allow independent verification without reconstructing conversation history.
 
 Minimum:
 
 - exact files/components changed;
-- exact candidate/branch/PR/commit where applicable;
+- exact implementation candidate identity and branch/PR/commit where applicable;
 - tests/checks and results;
 - mapping to acceptance criteria;
 - assumptions;
@@ -178,19 +162,19 @@ Minimum:
 
 Evidence is not equivalent to TEST PASS and does not authorize release.
 
-## 11. Independent Review
+Evidence integrity classes are not defined in v1.1.1; that audit finding remains deferred.
+
+## 10. Independent Review
 
 The reviewer compares:
 
-```text
-Approved ATC
-+ exact implementation candidate
-+ Evidence Bundle
-```
+- approved ATC;
+- exact implementation candidate identity;
+- Evidence Bundle for that same candidate.
 
 The reviewer does not modify implementation in the same review step.
 
-Canonical verdicts:
+Canonical verdicts are:
 
 - `REVIEW_PASS`
 - `REVIEW_FAIL`
@@ -198,11 +182,25 @@ Canonical verdicts:
 
 Use:
 
-- `FAIL` when evidence demonstrates non-conformance or defect;
-- `BLOCKED` when required validation cannot be completed because evidence, access, environment, or dependency is missing.
+- `REVIEW_FAIL` when evidence demonstrates non-conformance or defect;
+- `REVIEW_BLOCKED` when required validation cannot be completed because evidence, access, environment, or dependency is missing.
 
-## 12. Handoff to release lifecycle
+### 10.1 Candidate binding and invalidation
 
-After Review and DEV verification, promotion uses `DELIVERY-LIFECYCLE.md`.
+Every review verdict is valid only for the exact candidate identity recorded in the review.
 
-AgentFlow does not redefine candidate identity, TEST independence, rollback, or production authorization.
+If implementation content changes after a verdict:
+
+- the prior review remains historical evidence;
+- it is not valid for the changed candidate;
+- a new candidate identity must be established;
+- a new Evidence Bundle must describe the changed candidate;
+- Independent Review must run again before that candidate can be frozen/promoted.
+
+The framework does not require a GitHub Issue, Pull Request, or any other vendor-specific artifact as the canonical review record. The Project Adapter identifies the durable review/approval record location.
+
+## 11. Handoff to release lifecycle
+
+After a valid `REVIEW_PASS` for the exact current implementation candidate and DEV verification, promotion uses `DELIVERY-LIFECYCLE.md`.
+
+AgentFlow does not redefine TEST independence, rollback, or production authorization.
