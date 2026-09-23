@@ -1,21 +1,29 @@
 # Release Record
 
 Template status: `CANONICAL`  
-Framework compatibility: `1.1.1`
+Template version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
-## Identity
+## Identity / traceability
 
-- Release reference:
-- Requirement / work item:
-- ATC / implementation reference:
-- Reviewed candidate ID:
-- Independent Review reference:
-- Final candidate ID:
+- Release ID: `REL-<n>`
+- Candidate Manifest ID:
+- Exact promoted candidate ID:
 
-## DEV
+## Included work trace
+
+| Requirement | DA | ATC | Evidence | Review | Candidate Manifest entry |
+|---|---|---|---|---|---|
+| | | | | | |
+
+Every included change must resolve through the Candidate Manifest.
+
+## DEV / candidate freeze
 
 - DEV PASS evidence:
+- Candidate Manifest complete: YES / NO
 - Candidate identity verified:
+- Freeze reference:
 
 ## TEST
 
@@ -27,10 +35,14 @@ Framework compatibility: `1.1.1`
 - Previous PROD identity:
 - Previous config/data reference, if relevant:
 
-## Rollback
+## Recovery
 
 - Rollback action/reference:
 - Backup/restore proof, if required:
+- Rollback feasible: YES / NO
+- If NO, forward-fix reference:
+- `APPROVE_FORWARD_FIX` durable approval record, if used:
+- Post-incident reconciliation reference, if used:
 
 ## Production authorization
 
@@ -52,3 +64,5 @@ Framework compatibility: `1.1.1`
 ## Final status
 
 `DONE | ROLLED_BACK | BLOCKED`
+
+Do not use this artifact to invent a new workflow status outside `GOVERNANCE.md`.
