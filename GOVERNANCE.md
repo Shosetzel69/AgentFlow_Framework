@@ -1,7 +1,8 @@
 # AgentFlow Governance
 
 Status: `REFERENCE CORE`  
-Version: `1.1.1`
+Document version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
 ## 1. Decision model
 
@@ -23,7 +24,7 @@ This section is the **single normative end-to-end process definition** for Agent
 | 6 | IMPLEMENTATION | `APPROVE_TASK_CONTRACT <ref>` is durably recorded for the exact ATC |
 | 7 | EVIDENCE | Executor produces an Evidence Bundle for the exact implementation candidate |
 | 8 | REVIEW | Independent Review returns a verdict bound to that exact candidate identity |
-| 9 | DEV / CANDIDATE | DEV verification passes and the exact reviewed candidate is frozen |
+| 9 | DEV / CANDIDATE | DEV verification passes and a complete Candidate Manifest is recorded for the exact reviewed candidate |
 | 10 | TEST | TEST validates the exact frozen candidate |
 | 11 | RELEASE / PROD_GATE | Rollback is ready and `PROD_GO <candidate-ref>` is durably recorded |
 | 12 | PROD_DEPLOY / PROD_SMOKE | Exact approved candidate is deployed and smoke-validated |
@@ -61,6 +62,8 @@ Blocked by: <reference or NONE>
 
 The current canonical header takes precedence over historical wording elsewhere in the work item.
 
+Document lifecycle metadata such as `CURRENT`, `SUPERSEDED`, `HISTORICAL`, or template status is **not** a work-item Phase/Status and must not be substituted for the canonical workflow taxonomy.
+
 ## 5. Canonical phases and statuses
 
 | Phase | Canonical statuses |
@@ -91,10 +94,13 @@ Canonical tokens:
 
 | Token | Authorizes | Does not authorize |
 |---|---|---|
+| `APPROVE_AGENTFLOW_BOOTSTRAP <project-ref>` | persistence/activation of the approved AgentFlow Project Adapter/configuration | application implementation, infrastructure mutation, PROD |
 | `APPROVE_REQUIREMENT <ref>` | approval of the exact Requirement | architecture choice, implementation, TEST, PROD |
 | `APPROVE_TRANSFER <ref>` | entry into Development Analysis when the project enables a transfer gate | implementation, TEST, PROD |
 | `APPROVE_ARCHITECTURE <ref>` | the referenced architecture decision | implementation or release |
 | `APPROVE_TASK_CONTRACT <ref>` | implementation of that exact ATC | other ATCs, scope expansion, TEST, PROD |
+| `APPROVE_PROD_DATA_USE <ref>` | explicitly bounded use of production data in non-PROD under approved minimisation/anonymisation controls | unrestricted copying, persistence beyond approved scope |
+| `APPROVE_FORWARD_FIX <ref>` | bounded forward-fix path after rollback is proven infeasible | unrelated production changes or bypass of reconciliation/evidence |
 | `PROD_GO <candidate-ref>` | promotion of the exact approved candidate | a changed candidate or new production mutation |
 
 Generic phrases such as `continue`, `go`, `merge`, `looks good`, or `ok` do not replace a required explicit approval token.
@@ -132,7 +138,13 @@ Recommended model:
 
 Conversation history, AI memory, and local copies are context, not technical source of truth.
 
-## 8. Architecture policy
+## 8. Artifact identity and traceability
+
+AgentFlow artifacts use stable typed identifiers and mandatory parent links as defined in `ARTIFACT-TRACEABILITY.md`.
+
+Static identity/link rules are Core in v1.2. Automated artifact-graph validation is explicitly deferred to the future executable framework architecture.
+
+## 9. Architecture policy
 
 Material architecture changes require an Architecture Gate and explicit approval before implementation.
 
@@ -148,30 +160,21 @@ Typical triggers:
 - security/privacy/secrets model;
 - material cost or portability/exit impact.
 
-## 9. Implementation Preservation Rule
+## 10. Implementation Preservation Rule
 
 Approval of a feature or fix authorizes only the changes required for the approved outcome.
 
-It does not implicitly authorize changes to:
-
-- component boundaries;
-- APIs/contracts;
-- persistence;
-- identity/security;
-- orchestration;
-- providers/frameworks;
-- dependencies;
-- established algorithms or semantics.
+It does not implicitly authorize changes to component boundaries, APIs/contracts, persistence, identity/security, orchestration, providers/frameworks, dependencies, or established algorithms/semantics.
 
 A materially different implementation mechanism is a separate change request unless already covered by the approved Architecture Gate.
 
-## 10. No Opportunistic Refactoring
+## 11. No Opportunistic Refactoring
 
 Do not use an approved feature or bugfix as authority for unrelated cleanup, redesign, reorganization, or refactoring.
 
 If a larger refactor is necessary to implement the approved change safely, document its necessity and impact and obtain approval before execution.
 
-## 11. Definition of Done
+## 12. Definition of Done
 
 A change is not complete merely because code exists.
 
@@ -181,13 +184,14 @@ For work requiring production release, DONE normally requires:
 - approved scope;
 - approved ATC;
 - implementation complete;
-- mandatory tests pass;
+- mandatory checks supported by the minimum evidence strength required by Core/project policy;
 - Evidence Bundle complete;
 - Independent Review pass bound to the exact candidate that proceeds;
 - DEV pass;
+- complete Candidate Manifest;
 - immutable candidate frozen;
 - TEST pass on that exact candidate;
-- rollback prepared;
+- rollback prepared or an explicitly authorized forward-fix path when rollback is demonstrably infeasible;
 - explicit production authorization for that exact candidate;
 - exact candidate deployed;
 - smoke pass;
