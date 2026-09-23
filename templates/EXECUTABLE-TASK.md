@@ -1,20 +1,19 @@
 # Executable Work Item — Deprecated Compatibility View
 
 Template status: `DEPRECATED`  
-Framework compatibility: `1.1.1`
+Template version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
-> This template is retained only for compatibility with early AgentFlow usage. It is **not** an executable authority and must not replace an approved Agent Task Contract.
+> This template is retained only for compatibility with early AgentFlow usage. It is not an executable authority and must not replace an approved Agent Task Contract.
 
-For new AgentFlow work use:
+For new AgentFlow work use `templates/AGENT-TASK-CONTRACT.md`.
 
-`templates/AGENT-TASK-CONTRACT.md`
-
-If a project keeps this compatibility view, every instance must reference an already approved ATC and may only summarize that ATC for a local executor/tool.
+If a project keeps this view, every instance must reference an already approved ATC and may only summarize it for a local executor/tool.
 
 ## Canonical ATC reference
 
-- Approved ATC:
-- Approval record reference:
+- ATC ID:
+- Durable ATC approval record:
 
 ## Local execution summary
 
@@ -25,9 +24,10 @@ Status: IMPLEMENTATION_AUTHORIZED | IMPLEMENTING | IMPLEMENTATION_BLOCKED | IMPL
 Blocked by: NONE
 ```
 
-## Objective
+## Active executor reference
 
-Summarize, do not redefine, the approved ATC objective.
+- Executor:
+- Handoff record, if any:
 
 ## Required context
 
@@ -39,14 +39,6 @@ Summarize, do not redefine, the approved ATC objective.
 
 ## Prohibition
 
-This compatibility view may not change:
+This compatibility view may not change scope, out-of-scope, acceptance criteria, stop conditions, retry/remediation limits, evidence class requirements, candidate identity, or approvals.
 
-- scope;
-- out of scope;
-- acceptance criteria;
-- stop conditions;
-- retry limit;
-- required evidence;
-- approvals.
-
-If any of those need to change, update/re-approve the canonical ATC.
+If any need to change, revise/re-approve the canonical ATC.
