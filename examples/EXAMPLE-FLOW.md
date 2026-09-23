@@ -1,63 +1,67 @@
 # Example AgentFlow Execution
 
 Status: `NON-NORMATIVE EXAMPLE`  
-Framework compatibility: `1.1.1`
+Framework compatibility: `1.2.x`
 
-This example illustrates one possible execution. The normative process, statuses, and approvals are defined only in `GOVERNANCE.md`.
+This example illustrates one possible execution. The normative process, statuses, and approvals are defined only in Core documents.
 
 Scenario: add export-to-CSV to an existing application.
 
 ## 1. Requirement
 
-The Requirement defines:
+Create `REQ-42` with scope and acceptance criteria.
 
-- users can export the currently filtered table;
-- CSV only;
-- no scheduled export;
-- no email delivery;
-- export must respect existing authorization.
+Owner durably records:
 
-The owner records the required Requirement Approval in the project's durable approval record.
+`APPROVE_REQUIREMENT REQ-42`
 
 ## 2. Development Analysis
 
-Baseline inspection finds:
+Create `DA-42-01`.
 
-- existing table API already returns all required fields;
-- no new persistence;
-- no new auth boundary;
-- no shared API contract change required.
-
-Architecture Delta Check: no Architecture Gate required.
-
-Development Analysis proposes one ATC.
+Baseline inspection finds no Architecture Gate trigger and proposes `ATC-42-01`.
 
 ## 3. ATC
 
-```text
-ATC-CSV-01
-Objective: add authorized CSV export of current filtered table.
-Scope: UI button + server export endpoint + tests.
-Out of scope: scheduled exports, XLSX, email.
-Retry limit: 2.
-```
+The ATC declares:
 
-The exact ATC approval is recorded durably before implementation.
+- scope/out-of-scope;
+- mandatory tests;
+- minimum evidence class;
+- retry limit;
+- remediation-cycle budget;
+- execution owner/provenance fields.
 
-## 4. Implementation and evidence
+Owner durably records:
 
-Executor implements only the contract and produces an Evidence Bundle for candidate `abc123...`.
+`APPROVE_TASK_CONTRACT ATC-42-01`
+
+## 4. Implementation / evidence
+
+Executor produces candidate `abc123...` and `EV-ATC-42-01-01`.
+
+Mandatory checks reference CI/test artifacts rather than executor assertions.
 
 ## 5. Independent Review
 
-Independent reviewer checks candidate `abc123...` against the ATC and its Evidence Bundle.
+Reviewer satisfies the configured independence level and records `REV-ATC-42-01-01` for exact candidate `abc123...`.
 
-The verdict is recorded for that exact candidate identity.
+If implementation changes, that review no longer applies to the new candidate.
 
-If implementation changes, the review must be repeated for the new identity.
+## 6. Candidate Manifest
 
-## 6. DEV / TEST / PROD
+DEV verification passes.
 
-Release promotion follows `DELIVERY-LIFECYCLE.md` for the exact reviewed candidate.
+Create `CM-abc123` linking REQ/DA/ATC/EV/REV for all included work.
 
-The example intentionally does not restate the release gates here.
+The exact candidate is frozen.
+
+## 7. TEST / PROD
+
+TEST validates the exact frozen candidate.
+
+Release promotion then follows `DELIVERY-LIFECYCLE.md`.
+
+The release record traces the production candidate back through the Candidate Manifest.
+
+This example intentionally does not restate the full lifecycle gates.
