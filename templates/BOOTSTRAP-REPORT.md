@@ -1,9 +1,12 @@
 # AgentFlow Bootstrap Report
 
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
 Project:
 Bootstrap date:
 Bootstrap mode: `GREENFIELD | EXISTING`
-Framework version: `1.1.0`
+Framework version: `1.1.1`
 Executor:
 
 ## 1. Verdict
@@ -21,6 +24,7 @@ Reason:
 - Environments:
 - Architecture source:
 - Requirements source:
+- Durable approval record:
 - Release/deployment source:
 
 ## 3. Source-of-truth map
@@ -31,6 +35,7 @@ Reason:
 | Architecture | | | |
 | Data/API contracts | | | |
 | Delivery process | | | |
+| Approval records | | | |
 | Release/deploy | | | |
 | AI execution rules | | | |
 | Operations | | | |
@@ -50,12 +55,13 @@ Use: `EXISTS | ADAPT | ADD | DECIDE | BLOCKED`.
 | AgentFlow control | Current project | Classification | Required action |
 |---|---|---|---|
 | Requirement approval | | | |
+| Durable approval record | | | |
 | Architecture Gate | | | |
 | Development Analysis | | | |
 | Agent Task Contract | | | |
 | Explicit task approval | | | |
 | Evidence Bundle | | | |
-| Independent Review | | | |
+| Candidate-bound Independent Review | | | |
 | DEV verification | | | |
 | Immutable candidate | | | |
 | Independent TEST | | | |
@@ -106,3 +112,5 @@ Expected default: `NONE`.
 Recommended command:
 
 `APPROVE_AGENTFLOW_BOOTSTRAP <project-ref>`
+
+Durable approval record reference:
