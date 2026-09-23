@@ -1,128 +1,91 @@
 # AgentFlow — Ghid practic de utilizare
 
 Status: `NON-NORMATIVE REFERENCE`  
-Compatibil cu: `AgentFlow 1.1.1`
+Compatibil cu: `AgentFlow 1.2.x`
 
 Acest document explică **cum folosești** AgentFlow. Nu redefinește procesul, statusurile, token-urile sau regulile Core.
 
-Pentru reguli normative folosește:
+Sursele normative sunt:
 
-- `GOVERNANCE.md` — proces, faze/statusuri, approvals;
-- `AGENTFLOW.md` — Development Analysis, ATC, Evidence, Review;
-- `DELIVERY-LIFECYCLE.md` — DEV/TEST/PROD;
-- `AI-EXECUTION-RULES.md` — reguli pentru agenți AI;
-- `DOCUMENTATION-POLICY.md` — context și documentație;
-- `KIT-MANIFEST.md` — inventarul canonic al kitului.
+- `GOVERNANCE.md`;
+- `AGENTFLOW.md`;
+- `DELIVERY-LIFECYCLE.md`;
+- `AI-EXECUTION-RULES.md`;
+- `ARTIFACT-TRACEABILITY.md`;
+- `DOCUMENTATION-POLICY.md`.
 
 ## 1. Pentru un proiect nou
 
 1. Rulează `BOOTSTRAP-PROCEDURE.md`.
-2. Alege `GREENFIELD` sau `EXISTING`.
-3. Lasă bootstrap-ul read-only asupra aplicației și infrastructurii.
-4. Generează:
-   - `PROJECT-ADAPTER.md`;
-   - `agentflow.config.yaml`;
-   - `BOOTSTRAP-REPORT.md`.
-5. Rezolvă valorile `UNKNOWN/DECIDE/BLOCKED`.
-6. Activează AgentFlow numai după approval-ul cerut de Core și Project Adapter.
+2. Verifică precondițiile de aplicabilitate.
+3. Generează Project Adapter, config și Bootstrap Report.
+4. Configurează durable approval record, candidate identity și access boundaries.
+5. Activează numai după approval-ul bootstrap înregistrat durabil.
 
 ## 2. Pentru un proiect existent
 
 Nu converti tot backlog-ul retroactiv.
 
-În mod normal:
+Work nou poate intra în AgentFlow; work material început poate rămâne temporar `LEGACY-ADAPTED`.
 
-- work nou intră în `AGENTFLOW`;
-- work deja material început poate rămâne temporar `LEGACY-ADAPTED`;
-- upgrade-ul framework-ului se face separat de schimbările aplicației.
+Upgrade-ul framework-ului este separat de modificările aplicației.
 
-Vezi `ADOPTION-GUIDE.md` pentru strategia de adopție.
+## 3. Pentru un feature
 
-## 3. Înainte de fiecare sesiune
+Folosește template-urile canonice, în funcție de faza curentă:
 
-Citește doar:
+- Requirement;
+- Architecture Decision, dacă apare trigger;
+- Development Analysis;
+- Agent Task Contract;
+- Evidence Bundle;
+- Independent Review;
+- Candidate Manifest;
+- Release Record.
 
-1. work item-ul curent;
-2. `AI-EXECUTION-RULES.md`;
-3. codul/configurația afectată;
-4. secțiunile canonice strict relevante.
+Nu folosi `EXECUTABLE-TASK.md` ca autoritate; este deprecated.
 
-Nu reconstrui proiectul din istoricul chatului dacă starea poate fi citită din artefactele proiectului.
+## 4. Evidence și review
 
-## 4. Când ai o cerință nouă
+Pentru mandatory checks:
 
-Pornește din:
+- `ATTESTED` nu este suficient;
+- trebuie `ARTIFACT` sau `REPRODUCIBLE`.
 
-`templates/REQUIREMENT.md`
+Independent Review trebuie să respecte nivelul configurat în Project Adapter și să fie legat de exact candidate ID.
 
-Cerința trebuie să aibă scope, out-of-scope și acceptance criteria suficient de verificabile.
-
-Procesul și approval-ul Requirement-ului sunt definite exclusiv în `GOVERNANCE.md`.
-
-## 5. Când ai nevoie de arhitectură
-
-Folosește:
-
-`templates/ARCHITECTURE-DECISION.md`
-
-Trigger-ele și regula de escaladare sunt în `AGENTFLOW.md` și `GOVERNANCE.md`.
-
-Nu implementa o schimbare materială de arhitectură înainte de decizia aprobată.
-
-## 6. Pentru Development Analysis și implementare
-
-Development Analysis este read-only față de produs/runtime.
-
-Pentru execuție folosește:
-
-`templates/AGENT-TASK-CONTRACT.md`
-
-`templates/EXECUTABLE-TASK.md` este păstrat doar pentru compatibilitate și nu înlocuiește ATC-ul aprobat.
-
-## 7. După implementare
-
-Folosește:
-
-- `templates/EVIDENCE-BUNDLE.md`;
-- `templates/INDEPENDENT-REVIEW.md`.
-
-Review-ul trebuie să indice exact candidate identity. Dacă implementarea se schimbă, review-ul anterior rămâne istoric și trebuie repetat pentru noul candidate.
-
-Detaliile normative sunt în `AGENTFLOW.md`.
-
-## 8. Release
+## 5. Release
 
 Urmează exclusiv `DELIVERY-LIFECYCLE.md`.
 
-Pentru release record:
+Candidate Manifest este obligatoriu înainte de freeze.
 
-`templates/RELEASE-RECORD.md`
+Dacă rollback-ul nu este fezabil, folosește numai forward-fix path-ul explicit autorizat din lifecycle.
 
-Nu folosi acest ghid ca sursă alternativă pentru gate-uri sau secvența de release.
+## 6. Continuitate între chaturi
 
-## 9. Upgrade de framework
+Nu reconstrui starea din memorie dacă există artefacte canonice.
+
+Verifică:
+
+- Phase/Status;
+- artifact IDs și parent links;
+- approvals;
+- exact candidate;
+- Evidence/Review;
+- blocker;
+- următorul gate.
+
+## 7. Upgrade de framework
 
 Înainte de upgrade:
 
 1. verifică `CHANGELOG.md`;
 2. verifică `COMPATIBILITY.md`;
-3. nu suprascrie Project Adapter-ul local;
-4. identifică noile valori obligatorii;
-5. adoptă upgrade-ul explicit în proiectul consumator;
-6. validează local înainte de a considera upgrade-ul activ.
+3. verifică `CORE-VERSION-MATRIX.md`;
+4. păstrează valorile locale din Project Adapter;
+5. completează noile câmpuri;
+6. rulează revalidation;
+7. activează upgrade-ul explicit în proiectul consumator.
 
-Un release nou în `AgentFlow_Framework` nu modifică automat niciun proiect consumator.
-
-## 10. Dacă nu știi ce urmează
-
-Nu ghici din chat.
-
-Verifică:
-
-- current work-item Phase/Status;
-- `GOVERNANCE.md`;
-- blocker-ul curent;
-- următorul gate;
-- artefactul/evidence-ul necesar.
-
-Pentru continuitate între chaturi vezi `docs/PROJECT-CONTEXT-HANDOFF.md` și `docs/design/ORIGIN-AND-DESIGN-INTENT.md`.
+Un release nou în `AgentFlow_Framework` nu modifică automat nicio aplicație.
