@@ -1,8 +1,11 @@
 # AgentFlow Project Adapter
 
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
 Project:
 Adapter version:
-Framework version: `1.1.0`
+Framework version/range: `>=1.1.1,<1.2.0`
 
 ## 1. Ownership / approvals
 
@@ -11,6 +14,15 @@ Framework version: `1.1.0`
 - Architecture approver:
 - Task Contract approver:
 - PROD approver:
+
+### Durable approval record
+
+- System:
+- Location / project namespace:
+- Stable reference format:
+- Required approver identity format:
+
+An approval is workflow-effective only after it is recorded here according to Core Governance.
 
 ## 2. Toolchain
 
@@ -42,6 +54,7 @@ Framework version: `1.1.0`
 ## 5. Candidate identity
 
 - Candidate ID type:
+- How implementation/review proves it:
 - How DEV proves it:
 - How TEST proves it:
 - How PROD proves it:
@@ -49,7 +62,8 @@ Framework version: `1.1.0`
 ## 6. Approval tokens
 
 ```text
-Transfer:
+Requirement:
+Transfer, if enabled:
 Architecture:
 Task Contract:
 PROD:
@@ -69,12 +83,15 @@ PROD:
 
 - Reviewer model:
 - Required independence:
+- Durable review record location:
+- Candidate identity binding mechanism:
 
 ## 10. Release / rollback
 
 - Rollback mechanism:
 - Database migration rule:
 - Backup requirement:
+- Hotfix implementation path:
 
 ## 11. Canonical documentation map
 
