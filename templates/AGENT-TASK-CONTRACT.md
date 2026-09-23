@@ -1,5 +1,8 @@
 # Agent Task Contract
 
+Template status: `CANONICAL`  
+Framework compatibility: `1.1.1`
+
 ## Identity
 
 - ATC ID:
@@ -37,6 +40,8 @@
 
 ## Acceptance criteria
 
+Each criterion should be independently verifiable.
+
 - [ ] 
 
 ## Tests / checks
@@ -58,12 +63,13 @@ Project-specific additions:
 ## Evidence required
 
 - files/components changed;
+- exact candidate identity;
 - tests and results;
 - acceptance-criteria mapping;
 - assumptions/deviations;
 - known limitations;
 - residual risks;
-- candidate/PR/commit reference where applicable;
+- branch/PR/commit reference where applicable;
 - execution verdict.
 
 ## Approval
@@ -73,3 +79,9 @@ Expected token:
 ```text
 APPROVE_TASK_CONTRACT <ATC-ID>
 ```
+
+Durable approval record:
+
+- Approved by:
+- Timestamp:
+- Approval record reference:
