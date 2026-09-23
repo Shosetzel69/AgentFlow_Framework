@@ -1,44 +1,56 @@
 # AgentFlow Compatibility
 
 Status: `REFERENCE`  
-Current framework version: `1.1.1`
+Current framework version: `1.2.0`
 
 ## 1. Upgrade principle
 
-A new AgentFlow Framework release never changes a consuming project automatically.
+A framework release never changes a consuming project automatically.
 
-Each project must explicitly adopt an upgrade through its own Project Adapter and governance.
+Each project explicitly adopts an upgrade through its own governance, Project Adapter, and config.
 
-## 2. v1.1.0 → v1.1.1
+## 2. v1.1.0 → v1.2.0
 
-v1.1.1 preserves the v1.1 architecture and artifact model, but tightens several process controls.
+v1.2.0 retains the v1 process architecture but strengthens its contracts and traceability.
 
-Before a consuming project declares v1.1.1 active, it should map:
+A consuming project adopting v1.2 must add/map:
 
-1. `APPROVE_REQUIREMENT <ref>` or an explicitly renamed equivalent;
-2. durable approval record system/location;
-3. exact candidate identity used by Independent Review;
-4. rule that implementation mutation invalidates the old review for promotion;
-5. hotfix path that preserves the non-reducible Core controls.
+1. bootstrap and Requirement approval tokens;
+2. durable approval record;
+3. typed artifact IDs / parent links;
+4. Development Analysis artifact;
+5. evidence classes and mandatory-check proof strength;
+6. review independence level;
+7. candidate-bound review;
+8. Candidate Manifest;
+9. remediation-cycle budget;
+10. executor provenance/handoff;
+11. phase-scoped access boundary;
+12. production-data non-PROD rule;
+13. forward-fix recovery path;
+14. revalidation metadata/gap ownership;
+15. updated machine-readable config schema.
 
-Existing v1.1.0 work items do not need bulk historical rewriting. Apply the new rules prospectively and when active work is next materially touched, unless the consuming project decides otherwise.
+Existing historical items do not need bulk rewriting. Apply v1.2 rules prospectively and to active work when materially touched, unless the consuming project chooses a stricter migration.
 
-## 3. Adapter compatibility
+## 3. Recommended compatibility declaration
 
-Recommended declaration for projects adopting this release:
+`>=1.2.0,<2.0.0`
 
-`>=1.1.1,<1.2.0`
+This communicates compatibility with the protocol/document architecture before the future executable framework major version.
 
-A v1.1.0 Project Adapter can be upgraded in place by adding the new v1.1.1 fields. Do not overwrite project-specific values with the template.
+## 4. v1.1.1 status
 
-## 4. Deprecated artifact
+v1.1.1 was a pre-release audit-remediation candidate and was superseded before merge/release.
 
-`templates/EXECUTABLE-TASK.md` remains available for compatibility but is deprecated.
+Projects should upgrade from v1.1.0 directly to v1.2.0.
 
-It may summarize an already approved ATC for a local executor/tool, but it cannot create or modify execution authority.
+## 5. Deprecated artifact
 
-New projects should use `templates/AGENT-TASK-CONTRACT.md` directly.
+`templates/EXECUTABLE-TASK.md` remains compatibility-only and cannot create execution authority.
 
-## 5. Deferred compatibility impact
+## 6. Future major compatibility
 
-Future versions that introduce machine-readable state, artifact graphs, evidence classes, or multi-agent locking may require migration beyond simple documentation/template updates. Those changes are not part of v1.1.1.
+Machine-readable workflow state, automated policy checks, artifact-graph automation, lock/concurrency management, and an orchestrator will require a major-version architecture/migration decision.
+
+They are not part of v1.2.0.
