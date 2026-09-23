@@ -1,6 +1,9 @@
 # Framework Configuration
 
-Use this document once when adopting AgentFlow in a new project.
+Status: `REFERENCE CORE`  
+Version: `1.1.1`
+
+Use this document when adopting AgentFlow in a new project.
 
 ## 1. Project identity
 
@@ -11,6 +14,7 @@ Define:
 - Product owner or authorized approver
 - Main delivery process: `AGENTFLOW`
 - Legacy transition required: `YES | NO`
+- Compatible AgentFlow framework version/range
 
 ## 2. Environments
 
@@ -35,46 +39,37 @@ Define:
 - immutable candidate identifier, usually commit SHA;
 - merge strategy that preserves tested candidate identity.
 
-## 4. Issue tracking
+## 4. Work tracking and durable records
 
 Define where these artifacts live:
 
-- Requirement
-- Architecture Gate
-- Development Analysis
-- Agent Task Contract
-- Evidence Bundle
-- Review verdict
-- Release Record
+- Requirement;
+- Architecture Gate / ADR;
+- Development Analysis;
+- Agent Task Contract;
+- Evidence Bundle;
+- Independent Review verdict;
+- Release Record.
 
-They may live in one issue tracker or multiple tools, but references must be stable and linkable.
+Also define the **durable approval record location** used for scoped approvals. It may be the same work tracker or another system, but approval references must be stable, inspectable, and linkable.
 
 ## 5. Approval tokens
 
-Recommended defaults:
+Canonical defaults:
 
 ```text
-APPROVE_TRANSFER <ref>
+APPROVE_REQUIREMENT <ref>
+APPROVE_TRANSFER <ref>        # only if project enables transfer gate
 APPROVE_ARCHITECTURE <ref>
 APPROVE_TASK_CONTRACT <ref>
 PROD_GO <candidate-ref>
 ```
 
-A project may rename them, but approval must remain explicit, scoped, and non-ambiguous.
+A project may rename tokens in its Project Adapter, but approval must remain explicit, scoped, non-ambiguous, and durably recorded.
 
 ## 6. Architecture triggers
 
 Start with the Core triggers from `AGENTFLOW.md` and add project-specific triggers where required.
-
-Examples:
-
-- regulated-data boundary;
-- cryptographic architecture;
-- event schema compatibility;
-- public API versioning;
-- mobile-store release model;
-- ML model governance;
-- infrastructure cost threshold.
 
 ## 7. Retry defaults
 
@@ -86,38 +81,34 @@ Review remediation: new implementation cycle
 TEST failure: return to DEV and create new candidate
 ```
 
-A specific ATC may define another retry limit.
+A specific ATC may define another per-execution retry limit.
 
 ## 8. Required evidence
 
-Choose project defaults for:
+Choose project defaults for the checks relevant to that project.
 
-- unit tests;
-- integration tests;
-- static analysis;
-- build;
-- deployment checks;
-- screenshots;
-- logs;
-- database migration proof;
-- security tests;
-- performance evidence.
+Evidence integrity classes are not standardized in v1.1.1.
 
-Only evidence materially relevant to the task should be mandatory.
+## 9. Review binding
 
-## 9. Release identity
+Define the candidate identity format used by Independent Review.
+
+Core requirement:
+
+- every review verdict records one exact candidate identity;
+- if implementation changes, the old verdict is historical only and a new review is required.
+
+## 10. Release identity
 
 Define the canonical candidate identifier.
 
 Recommended:
 
-```text
-CANDIDATE_ID = immutable source commit SHA
-```
+`CANDIDATE_ID = immutable source commit SHA`
 
 Alternative immutable artifacts are allowed if the project cannot promote source identity directly.
 
-## 10. Rollback policy
+## 11. Rollback policy
 
 Define minimum rollback evidence for:
 
@@ -127,15 +118,24 @@ Define minimum rollback evidence for:
 - infrastructure;
 - third-party configuration.
 
-## 11. Documentation map
+## 12. Documentation map
 
 Define canonical homes for:
 
-- Architecture
-- Governance
-- Requirements
-- Data/API contracts
-- Operations
-- AI execution rules
+- Architecture;
+- Governance;
+- Requirements;
+- Data/API contracts;
+- Operations;
+- AI execution rules.
 
 Avoid two current sources of truth for the same subject.
+
+## 13. Precedence
+
+When a local configuration value conflicts with Core:
+
+1. Core safety/authority rules win unless an explicitly approved framework deviation exists;
+2. Project Adapter defines project-specific mapping and allowed customization;
+3. machine-readable config implements the Adapter values;
+4. convenience documentation never overrides Core or the Adapter.
