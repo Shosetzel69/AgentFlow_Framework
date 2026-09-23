@@ -53,6 +53,7 @@ This file is the single normative inventory of the AgentFlow v1.2.0 repository k
 - docs/reference/MATURITY-ASSESSMENT-RO.md
 - docs/audit/EXTERNAL-AUDIT-TEMPLATE.md
 - docs/audit/reports/AF-AUDIT-2026-09-23-01.md
+- docs/audit/reports/AF-AUDIT-2026-09-23-01-REMEDIATION-v1.2.0.md
 - docs/research/MARKET-LANDSCAPE.md
 
 ## Inventory rule
