@@ -1,7 +1,8 @@
 # AgentFlow Documentation Policy
 
-Status: `REFERENCE CORE`
-Version: `1.0.0`
+Status: `REFERENCE CORE`  
+Document version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
 ## 1. Goal
 
@@ -15,72 +16,45 @@ Core rule:
 
 ### L0 — Entry / Handoff
 
-Examples:
-
-- issue;
-- task;
-- PR/MR description;
-- release handoff.
+Issues/work items, PR/MR/change descriptions, release handoffs.
 
 Purpose: explain what is being done and where authoritative detail lives.
-
-Rule: short, decision-oriented, links instead of copied history.
 
 ### L1 — Canonical Current State
 
 Examples:
 
-- Architecture;
 - Governance;
+- Architecture;
 - Requirements;
 - Data/API contracts;
-- Delivery lifecycle.
+- AgentFlow operating/release rules;
+- Project Adapter/config.
 
 Purpose: current approved state.
 
-Rule: read only relevant sections.
-
 ### L2 — Operational Procedures
 
-Examples:
-
-- runbooks;
-- migration/cutover procedures;
-- QA procedures.
-
-Purpose: safely execute one procedure.
-
-Rule: one purpose per document; do not duplicate architecture/history.
+Runbooks, migration/cutover, QA/test procedures.
 
 ### L3 — Reference / History
 
-Examples:
+Analyses, reports, superseded material, audits, archived runbooks.
 
-- analysis documents;
-- reports;
-- superseded material;
-- archived runbooks.
-
-Purpose: preserve reasoning/evidence.
-
-Rule: never load by default.
+History is never loaded as current truth by default.
 
 ## 3. Progressive context loading
 
 Default execution context:
 
-1. current task/issue;
+1. current task/work item;
 2. AI execution rules;
 3. affected code/configuration;
 4. only relevant canonical sections.
 
-Do not automatically load the entire repository documentation set.
-
 If more than five supporting documents appear necessary, create a short Context Map before loading more material.
 
 ## 4. Context Map
-
-A task may declare:
 
 ```text
 Required context:
@@ -95,19 +69,16 @@ Excluded context:
 
 The handoff should be executable without reconstructing prior chat history.
 
-## 5. Current-state vs history
-
-Analysis documents are decision-support history, not a second current-state manual.
+## 5. Current state vs history
 
 After a decision:
 
 - keep the decision outcome/reference;
 - update canonical current-state documentation;
-- do not continuously synchronize historical analysis with later implementation details.
+- preserve analysis/history separately;
+- do not make historical analysis a second current-state manual.
 
 ## 6. Update discipline
-
-Update only documentation materially affected by a change.
 
 Prefer:
 
@@ -124,26 +95,49 @@ Avoid:
 
 ## 7. Versioning
 
-For canonical operational documents, keep the current version at one stable path and use version-control history for old versions.
+Canonical documents keep one stable path and use version-control history for old versions.
 
 Recommended metadata:
 
 ```text
 Status: CANONICAL | WORKING | HISTORICAL | SUPERSEDED
-Version: vX.Y
+Document version: X.Y.Z
+Framework compatibility: <range>
 Applicability: CURRENT | HISTORICAL_ONLY
-Applies to: AGENTFLOW | LEGACY-ADAPTED | BOTH
-Effective from: YYYY-MM-DD
-Supersedes: <optional>
 ```
 
-Do not create active `-v1`, `-v2`, `-final` copies only for version history.
+Templates use:
 
-## 8. Documentation safeguard
+```text
+Template status:
+Template version:
+Framework compatibility:
+```
+
+The shipped versions are recorded in `docs/reference/CORE-VERSION-MATRIX.md`.
+
+## 8. Artifact identity
+
+Stable AgentFlow artifact identity and mandatory parent links are defined in `ARTIFACT-TRACEABILITY.md`.
+
+Document lifecycle metadata is separate from work-item workflow Phase/Status.
+
+## 9. Framework self-consistency
+
+For AgentFlow itself:
+
+- `GOVERNANCE.md` is the only normative end-to-end process definition;
+- `KIT-MANIFEST.md` is the only normative shipped-file inventory;
+- `docs/reference/CORE-VERSION-MATRIX.md` is the shipped artifact-version mapping;
+- README, adoption guides, translations, examples, audit/reference material are non-normative unless explicitly marked otherwise;
+- convenience documents should link to Core instead of restating process rules;
+- release version changes update `VERSION`, `CHANGELOG.md`, compatibility guidance, manifest, and version matrix.
+
+## 10. Documentation safeguard
 
 Before adding a document, ask:
 
-1. Is this needed to execute, decide, or operate?
+1. Is this needed to execute, decide, operate, audit, or version?
 2. Does it already have a canonical home?
 3. Can I link instead of duplicate?
 4. Will an agent know exactly what to read?

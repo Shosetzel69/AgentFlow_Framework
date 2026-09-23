@@ -1,6 +1,10 @@
 # AgentFlow — Evaluare de maturitate
 
+Status: `HISTORICAL ASSESSMENT`
+
 Versiune evaluata: AgentFlow Independent Kit v1.1.0
+
+Acest document ramane fotografia interna a v1.1.0 si nu descrie starea curenta v1.2.0.
 
 ## 1. Concluzie executiva
 

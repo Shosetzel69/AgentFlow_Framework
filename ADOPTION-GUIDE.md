@@ -1,89 +1,91 @@
 # AgentFlow Adoption Guide
 
-> For a project-specific guided adoption, run `BOOTSTRAP-PROCEDURE.md` first. It produces the proposed Project Adapter, configuration, gap map and adoption verdict.
+Status: `NON-NORMATIVE ADOPTION GUIDE`  
+Framework compatibility: `1.2.x`
 
-## 1. Greenfield project
+> This guide explains adoption. It does not redefine the normative AgentFlow process; use `GOVERNANCE.md` for process/status/approval rules.
 
-Recommended sequence:
+## 1. Start with bootstrap
 
-1. copy this kit into the repository or project handbook;
-2. complete `FRAMEWORK-CONFIG.md`;
-3. create the project adapter from `templates/PROJECT-ADAPTER.md`;
-4. choose canonical locations for Architecture, Requirements, and API/Data contracts;
-5. configure branch protection and CI/CD;
-6. adopt the work-item header and status taxonomy;
-7. start all new work with AgentFlow.
+Run `BOOTSTRAP-PROCEDURE.md`.
 
-## 2. Existing project
+Do not activate AgentFlow until:
 
-Do not retrofit every old issue and document at once.
+- applicability preconditions pass;
+- durable approval location is configured;
+- immutable/equivalent candidate identity exists;
+- Project Adapter and config agree;
+- required phase access boundaries are mapped;
+- `APPROVE_AGENTFLOW_BOOTSTRAP <project-ref>` is durably recorded.
 
-Recommended transition:
+## 2. Greenfield
 
-```text
-new work → AGENTFLOW
-materially-started old work → LEGACY-ADAPTED
-```
+Adopt AgentFlow directly after bootstrap approval.
 
-Use one release lifecycle for both.
+## 3. Existing project
 
-When the final legacy work item is closed, retire the transition mode.
+Do not retrofit every old work item.
 
-## 3. Lightweight mode
+Default transition:
 
-For a solo or small project, do not add unnecessary enterprise controls.
+- new work → `AGENTFLOW`;
+- materially started old work → `LEGACY-ADAPTED`.
 
-Minimum recommended gates:
+Use one release lifecycle.
 
-- Requirement Approval;
-- Architecture Gate only when triggered;
-- Task Contract Approval;
-- Independent Review;
-- TEST Pass;
-- PROD GO.
+## 4. Minimum v1.2 control set
 
-Do not add CAB, multi-person approval, release trains, or formal risk scoring unless justified.
+Before the first normal implementation verify:
 
-## 4. Team mode
-
-For teams, map logical roles to real people/groups:
-
-- Product Owner;
-- Architect;
-- Development Analyst;
-- Executor;
-- Reviewer;
-- QA;
-- Release Approver.
-
-The same person may hold multiple roles if risk policy allows, but review/test independence should remain meaningful.
+- Requirement approval token and durable record;
+- Development Analysis template/location;
+- ATC approval token;
+- retry limit + remediation-cycle budget;
+- evidence minimum class;
+- review independence level;
+- Candidate Manifest;
+- immutable candidate identity;
+- TEST mapping;
+- rollback/forward-fix recovery path;
+- PROD GO token;
+- executor provenance/handoff;
+- phase access boundaries;
+- artifact ID mapping;
+- revalidation metadata.
 
 ## 5. AI-heavy mode
 
-If AI agents execute most work, strengthen:
+Strengthen:
 
-- stable task references;
-- exact candidate identity;
-- explicit approval tokens;
-- stop conditions;
-- evidence mapping;
+- exact artifact references;
+- required evidence class;
+- candidate identity binding;
+- executor/session provenance;
 - context limits;
-- branch/environment protections.
+- access/credential scoping;
+- Project Adapter revalidation.
 
-Do not compensate for uncertain AI behavior by loading the entire project history. Improve contracts and canonical documentation instead.
+Do not compensate for uncertain AI behavior by loading entire project history.
 
-## 6. First implementation checklist
+## 6. Upgrade from v1.1
 
-Before the first AgentFlow task, verify:
+Read:
 
-- owner/approver identified;
-- project adapter exists;
-- default branch protected;
-- DEV/TEST/PROD mapping defined;
-- candidate identity defined;
-- task approval token defined;
-- PROD approval token defined;
-- rollback policy defined;
-- required evidence defined;
-- independent review executor identified;
-- canonical architecture and requirements locations defined.
+- `CHANGELOG.md`;
+- `COMPATIBILITY.md`;
+- `docs/reference/CORE-VERSION-MATRIX.md`.
+
+Do not overwrite local Project Adapter/config values with templates. Reconcile the new fields explicitly and revalidate the adapter.
+
+## 7. What remains future work
+
+v1.2 does not provide:
+
+- state machine;
+- automatic gate enforcement;
+- lock manager;
+- multi-agent scheduler/orchestrator;
+- automated artifact graph;
+- automated metrics.
+
+Do not claim those capabilities from documentation alone.

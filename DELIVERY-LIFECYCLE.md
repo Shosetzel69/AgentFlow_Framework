@@ -1,28 +1,33 @@
 # AgentFlow Delivery Lifecycle — DEV → TEST → PROD
 
-Status: `REFERENCE CORE`
-Version: `1.0.0`
+Status: `REFERENCE CORE`  
+Document version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
 ## 1. Goal
 
 The release process must answer at any time:
 
 1. What change is being released?
-2. What exact artifact or source identity was tested?
-3. What exact identity is running in production?
-4. How do we return to the previous known-good state?
+2. What exact artifact or source identity was reviewed and tested?
+3. Which approved work items are contained in that candidate?
+4. What exact identity is running in production?
+5. How do we recover if production fails?
 
-## 2. Canonical flow
+The normative end-to-end AgentFlow process is defined in `GOVERNANCE.md`. This document governs release promotion.
+
+## 2. Release flow
 
 ```text
-Approved implementation
+reviewed implementation candidate
 → DEV verification
-→ freeze CANDIDATE_ID
+→ build/complete Candidate Manifest
+→ freeze same CANDIDATE_ID
 → TEST exact same candidate
 → TEST PASS
 → integrate/publish without identity rewrite
 → rollback preflight
-→ explicit PROD GO
+→ explicit PROD GO for exact candidate
 → PROD exact same candidate
 → smoke PASS
 → close
@@ -31,25 +36,33 @@ Approved implementation
 Failure flow:
 
 ```text
-TEST FAIL
+candidate changes or TEST fails
+→ invalidate affected review/test evidence
 → DEV remediation
 → new candidate identity
+→ Evidence / Review as required
 → DEV verification
+→ Candidate Manifest
 → TEST again
 ```
 
 ## 3. Non-negotiable rules
 
-1. The protected default branch is not a development or debugging environment.
-2. Source changes use the project-approved branch/review mechanism.
+1. The protected/default integration target is not a development or debugging environment.
+2. Changes use the project-approved change/review mechanism.
 3. DEV is the normal implementation/debugging environment.
-4. TEST validates the exact frozen candidate.
-5. Fixes are not made directly in TEST.
-6. Any source change after candidate freeze creates a new candidate and invalidates the previous TEST result.
-7. Merge/integration does not itself authorize production deployment.
-8. Production requires explicit human authorization.
-9. Rollback is known before production deployment.
-10. Environment-local runtime data are not promoted as if they were source artifacts.
+4. Independent Review verdicts are bound to one exact candidate identity.
+5. Candidate mutation after `REVIEW_PASS` invalidates that review for promotion and requires a new review of the changed candidate.
+6. A complete Candidate Manifest is required before candidate freeze.
+7. TEST validates the exact frozen candidate.
+8. Fixes are not made directly in TEST.
+9. Any source/content change after candidate freeze creates a new candidate and invalidates the previous TEST result.
+10. Merge/integration does not itself authorize production deployment.
+11. Production requires explicit human authorization recorded according to `GOVERNANCE.md`.
+12. PROD_GO is valid only for the exact Candidate Manifest/candidate identity approved.
+13. Rollback is known before production deployment unless the explicitly controlled forward-fix exception is invoked.
+14. Environment-local runtime data are not promoted as if they were source artifacts.
+15. Production data is not copied into non-production except under the explicit privacy/data-use control in `AI-EXECUTION-RULES.md`.
 
 ## 4. Environment roles
 
@@ -62,7 +75,7 @@ Purpose:
 - automated tests;
 - first technical verification.
 
-Exit condition: stable enough to freeze one immutable candidate identity.
+Exit condition: stable enough to complete a Candidate Manifest and freeze the exact identity that has the required current `REVIEW_PASS`.
 
 ### TEST
 
@@ -74,10 +87,11 @@ Purpose:
 Requirements:
 
 - exact frozen candidate;
+- Candidate Manifest;
 - independent verdict;
 - no unresolved blocker/major defect.
 
-Any source fix returns to DEV.
+Any implementation change returns to DEV and creates a new candidate identity.
 
 ### PROD
 
@@ -87,30 +101,37 @@ Purpose:
 
 Default post-deploy validation is a focused smoke test, not a second development cycle.
 
+Post-release observation as a new formal lifecycle phase is intentionally not introduced in v1.2.
+
 ## 5. Release gates
 
 ### G1 — Scope approved
 
 Minimum:
 
-- approved requirement;
+- approved Requirement;
 - acceptance criteria;
 - approved Architecture Gate where required.
 
-### G2 — DEV PASS + Candidate Freeze
+### G2 — DEV PASS + Candidate Manifest + Freeze
 
 Minimum:
 
 - implementation complete;
-- required tests green;
+- mandatory checks satisfy required evidence class;
+- current `REVIEW_PASS` for the exact candidate identity that will be frozen;
 - DEV verification pass;
+- Candidate Manifest complete;
 - exact immutable `CANDIDATE_ID` recorded.
+
+If the implementation changed after review, G2 fails until the changed candidate is evidenced and reviewed again.
 
 ### G3 — TEST PASS
 
 Minimum:
 
-- TEST validates exact candidate;
+- TEST validates exact frozen candidate;
+- Candidate Manifest identity matches the tested candidate;
 - expected behavior validated;
 - no unresolved blocking defect;
 - verdict recorded against candidate identity.
@@ -120,12 +141,15 @@ Minimum:
 Minimum:
 
 - TEST-passed candidate is the one being promoted;
+- Candidate Manifest is complete and current;
+- every included ATC/work item in the manifest has the required approval/evidence/review references;
 - integration did not rewrite candidate identity, or an equivalent immutable artifact mapping is proven;
+- current review/test evidence applies to that exact identity;
 - previous production identity captured;
-- rollback action/reference known;
-- explicit owner/approver authorization.
+- rollback action/reference known, or forward-fix exception conditions explicitly satisfied;
+- explicit owner/approver authorization for that candidate is durably recorded.
 
-For destructive/non-reversible data changes, require backup and non-PROD restore proof before PROD.
+For destructive/non-reversible data changes, require backup and non-PROD restore proof before PROD where rollback is expected to be feasible.
 
 ### G5 — PROD PASS / Close
 
@@ -133,43 +157,52 @@ Minimum:
 
 - production runs expected candidate;
 - smoke passes;
-- Release Record complete.
+- Release Record complete;
+- production state remains traceable to the Candidate Manifest.
 
 ## 6. Candidate identity
 
 Preferred:
 
-```text
-CANDIDATE_ID = immutable source commit SHA
-```
+`CANDIDATE_ID = immutable source commit SHA`
 
 Alternative immutable artifact IDs are acceptable when source identity cannot be promoted directly.
 
 Invariant:
 
-```text
-DEV candidate = TEST candidate = PROD candidate
-```
+`reviewed candidate = DEV frozen candidate = TEST candidate = PROD candidate`
 
 for one final promotion cycle.
 
-## 7. Multi-wave releases
+For platforms without promotable source identity, bootstrap must establish an equivalent immutable artifact/snapshot/hash identity before adoption may be `READY_TO_ADOPT`.
+
+## 7. Candidate Manifest
+
+Every frozen candidate has one Candidate Manifest using `templates/CANDIDATE-MANIFEST.md`.
+
+The manifest records:
+
+- manifest ID;
+- exact candidate ID;
+- base/previous identity when relevant;
+- every included Requirement/ATC;
+- relevant ADR/DA links;
+- Evidence Bundle reference per included ATC;
+- Independent Review reference and reviewed candidate ID per included ATC;
+- known exclusions/limitations;
+- manifest author and timestamp.
+
+The manifest is a static traceability control in v1.2. Automated dependency/composition verification is deferred to the future executable framework.
+
+Any candidate mutation invalidates the prior manifest for promotion.
+
+## 8. Multi-wave releases
 
 Intermediate validation checkpoints are allowed.
 
-```text
-wave
-→ DEV
-→ freeze CHECKPOINT_ID
-→ TEST
-→ checkpoint verdict
-→ STOP before PROD
-→ next wave
-```
+Only the Final Release Candidate may continue to production. Any implementation mutation produces a new identity and requires all evidence whose validity depends on the prior identity to be repeated.
 
-Only the Final Release Candidate may continue to production.
-
-## 8. Rollback
+## 9. Rollback
 
 Prepare rollback before production.
 
@@ -191,14 +224,16 @@ Also capture:
 
 Prefer backward-compatible migrations.
 
-For destructive or non-reversible change require:
+For destructive or non-reversible change require, where technically feasible:
 
 - backup;
-- checksum or equivalent integrity evidence;
+- integrity evidence;
 - demonstrated restore in non-PROD;
 - rollback/cutover procedure.
 
-## 9. Production failure
+## 10. Production failure
+
+Normal path:
 
 ```text
 STOP
@@ -207,40 +242,78 @@ STOP
 → preserve evidence
 → fix in DEV
 → create new candidate
-→ DEV → TEST → PROD again
+→ Evidence / Review / DEV / Candidate Manifest / TEST / PROD again
 ```
 
 Do not patch production ad hoc.
 
-## 10. Hotfix
+## 11. Forward-fix exception
 
-Urgency may reduce test breadth but not the core controls:
+Forward-fix is an emergency exception for cases where rollback is **demonstrably not feasible** within the required recovery window.
+
+Before forward-fix begins, record:
+
+- incident/release reference;
+- current production identity/state;
+- why rollback is not feasible;
+- bounded forward-fix objective/scope;
+- minimum validation/evidence that can be performed safely;
+- named owner/approver;
+- recovery/reconciliation plan.
+
+Required authorization:
+
+`APPROVE_FORWARD_FIX <ref>`
+
+Rules:
+
+1. use an emergency candidate identity whenever the platform permits it;
+2. preserve all available evidence;
+3. perform independent review/targeted validation to the maximum feasible level before mutation;
+4. if direct production mutation is unavoidable, record every change;
+5. create/reconcile an immutable source/artifact candidate representing the resulting production state immediately after stabilization;
+6. perform mandatory post-incident reconciliation so repository/artifact identity and production state match;
+7. do not close the release while production cannot be traced to a durable candidate identity.
+
+Forward-fix does not authorize unrelated changes.
+
+## 12. Hotfix
+
+Urgency may reduce **test breadth**, but it may not remove the controls that preserve authority, evidence, identity, and recovery safety.
+
+Minimum non-reducible hotfix controls:
+
+1. explicitly approved hotfix Requirement/scope;
+2. approved ATC;
+3. implementation in DEV or project-designated emergency development path;
+4. Evidence Bundle for exact implementation candidate;
+5. Independent Review of that exact candidate;
+6. DEV verification;
+7. Candidate Manifest and freeze;
+8. targeted TEST of the exact frozen candidate;
+9. rollback/recovery preflight;
+10. explicit `PROD_GO <candidate-ref>`;
+11. PROD smoke and Release Record.
+
+Only the breadth of TEST may be reduced for urgency, and that reduction must be explicitly accepted by the authorized approver.
+
+## 13. Minimal Release Record
 
 ```text
-Hotfix scope
-→ DEV
-→ freeze candidate
-→ targeted TEST
-→ rollback check
-→ explicit PROD GO
-→ PROD
-```
-
-Any reduced test scope must be explicitly accepted by the authorized approver.
-
-## 11. Minimal Release Record
-
-```text
-Requirement / work item
-Implementation reference
+Release ID
+Requirement(s)
+ATC(s)
+Candidate Manifest ID
+Reviewed candidate identity
+Independent Review reference(s)
 CANDIDATE_ID
 DEV PASS evidence
 TEST PASS evidence
 Previous PROD identity
-Rollback action/reference
-PROD GO
+Rollback action/reference or Forward-Fix authorization
+PROD GO record
 PROD deploy evidence
 PROD smoke verdict
 ```
 
-Add only fields materially relevant to the release.
+Add only fields materially relevant to the release, but do not omit required traceability links.

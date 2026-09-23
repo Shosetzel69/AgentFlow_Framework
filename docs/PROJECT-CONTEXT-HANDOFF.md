@@ -1,188 +1,99 @@
 # AgentFlow Framework — Project Context Handoff
 
-Status: `CURRENT CONTEXT`
-Last updated: `2026-09-23`
-Framework baseline: `Independent Kit v1.1.0`
+Status: `CURRENT CONTEXT`  
+Last updated: `2026-09-23`  
+Framework candidate: `v1.2.0 pre-orchestration audit hardening`
 
 ## 1. Purpose
 
-This document exists so a new chat or agent can continue work on AgentFlow without access to the conversations in which the framework was created.
+This document allows a new chat/agent to continue AgentFlow Framework work without access to the conversations that created it.
 
-It is context, not a substitute for canonical Core documents.
+It is context, not a substitute for canonical Core.
 
-## 2. Current repository purpose
+## 2. Repository purpose
 
 `AgentFlow_Framework` is the independent home of AgentFlow.
 
-The framework was extracted from delivery practices first developed and exercised in another software project, then generalized so the Core is not coupled to that project, GitHub, Cloudflare, Nile/PostgreSQL, Claude, ChatGPT, or any other specific platform.
+Consuming applications are proving grounds / consumers. Framework changes never propagate automatically to them.
 
-The original application project should be treated as a reference implementation / proving ground, not as the source of truth for future AgentFlow Core development.
+## 3. Current work
 
-## 3. Current framework state
+Active work item: Issue #8 — v1.2.0 pre-orchestration audit hardening.
 
-Current kit version: `1.1.0`.
+v1.2.0 supersedes the narrower unmerged v1.1.1 candidate from Issue #5 / PR #6.
 
-Core currently defines:
+The independent audit of the v1.1.0 baseline remains at:
 
-- requirement and approval boundaries;
-- architecture delta/gate;
-- Development Analysis;
-- Agent Task Contracts;
-- explicit scoped execution approval;
-- retry limits and stop conditions;
-- Evidence Bundle;
-- Independent Review;
-- DEV → frozen candidate → TEST → PROD lifecycle;
-- rollback-before-PROD;
-- source-of-truth hierarchy;
-- progressive context loading;
-- greenfield/existing-project bootstrap;
-- Project Adapter separation.
+`docs/audit/reports/AF-AUDIT-2026-09-23-01.md`
 
-## 4. Key design decisions already made
+## 4. Current canonical sources
 
-### Core vs adapters
+- `GOVERNANCE.md` — single normative end-to-end process, phases/statuses, approvals.
+- `AGENTFLOW.md` — Development Analysis, execution, evidence, review.
+- `DELIVERY-LIFECYCLE.md` — candidate/release/recovery controls.
+- `AI-EXECUTION-RULES.md` — agent instruction/access/evidence rules.
+- `ARTIFACT-TRACEABILITY.md` — typed artifact IDs and parent links.
+- `FRAMEWORK-CONFIG.md` — Project Adapter/config schema and precedence.
+- `DOCUMENTATION-POLICY.md` — documentation/context/versioning.
+- `METRICS.md` — static metric vocabulary.
+- `KIT-MANIFEST.md` — canonical shipped-file inventory.
+- `docs/reference/CORE-VERSION-MATRIX.md` — exact shipped document/template versions.
 
-Core remains tool-neutral.
+## 5. v1.2 objective
 
-Project-specific concerns belong in Project Adapter/configuration.
+v1.2 completes all audit hardening that can be implemented without redesigning AgentFlow into an executable orchestration platform.
 
-Organization-scale security/compliance/change-management controls should become Organization/Security adapters rather than automatically expanding Core.
+It includes:
 
-### Existing-project adoption
+- explicit/durable approvals including bootstrap;
+- evidence classes;
+- candidate-bound review;
+- review independence levels;
+- Candidate Manifest;
+- static artifact IDs/links;
+- config/Adapter precedence;
+- cross-cycle remediation budget;
+- executor provenance + single-active-executor/handoff rule;
+- forward-fix exception;
+- phase access boundaries;
+- production-data/non-PROD control;
+- bootstrap revalidation;
+- metrics vocabulary;
+- applicability preconditions.
 
-Do not perform big-bang process conversion.
+## 6. Explicit architectural boundary after v1.2
 
-Default transition:
+Do not silently implement the following without a new Architecture decision:
 
-```text
-new work -> AGENTFLOW
-materially started work -> LEGACY-ADAPTED
-```
+- machine-readable work-item state engine;
+- automated policy/gate enforcement;
+- automated artifact graph/dependency verification;
+- lock manager/concurrency scheduler;
+- duplicate-execution detection engine;
+- agent router/orchestrator;
+- automatic abandonment recovery;
+- post-release observation as a new first-class lifecycle phase;
+- automated state-transition metrics;
+- enterprise Security/Operations/Compliance adapters if they materially change Core.
 
-### Bootstrap
+These are future architecture items, not unfinished v1.2 documentation.
 
-Bootstrap is read-only by default and generates:
+## 7. Original problem / JTBD
 
-- Project Adapter;
-- machine-readable configuration;
-- Bootstrap Report;
-- adoption verdict.
+AgentFlow exists because software delivery spread across AI chats/sessions becomes difficult to resume safely.
 
-### Execution authority
-
-Development Analysis does not authorize implementation.
-
-An ATC becomes executable only after explicit approval scoped to that ATC.
-
-### Release identity
-
-One final immutable candidate must be the identity verified through DEV, TEST and PROD, or the project must provide an equivalent immutable artifact mapping.
-
-## 5. Original problem / JTBD
-
-The strongest current product insight is that AgentFlow exists primarily because work distributed across chats becomes difficult to resume safely.
-
-The framework's underlying job-to-be-done is:
-
-> preserve project continuity, decision authority and traceability across independent AI sessions.
+> Preserve project continuity, decision authority and traceability across independent AI sessions.
 
 See `docs/design/ORIGIN-AND-DESIGN-INTENT.md`.
 
-## 6. Current maturity assessment
-
-Current judgement:
-
-- process/governance maturity: high;
-- release lifecycle maturity: high;
-- agent execution model: medium-high;
-- machine enforcement: medium-low;
-- multi-agent orchestration: medium-low.
-
-AgentFlow is usable as a real process framework for solo/small-team projects, but is not yet an autonomous delivery platform.
-
-See `docs/reference/MATURITY-ASSESSMENT-RO.md`.
-
-## 7. Important gaps / future candidates
-
-Highest-value evolution candidates currently identified:
-
-1. formal continuation/resume contract;
-2. machine-readable state machine;
-3. artifact graph / traceability model;
-4. automated gate validation / policy enforcement;
-5. framework metrics;
-6. multi-agent locking, provenance and recovery;
-7. Security SDLC adapter;
-8. Operations / Incident adapter.
-
-Do not assume these are approved roadmap commitments. They are current candidates.
-
-## 8. Market position — current working view
-
-Relevant neighboring tools include:
-
-- GitHub Spec Kit;
-- BMad Method;
-- Kiro;
-- GitLab Duo Agent Platform.
-
-Spec Kit and BMad are the closest free/open-source references currently identified.
-
-The current differentiation hypothesis is not "specification before coding" or "multiple AI agents". It is the combination of:
-
-- conversation-independent project state;
-- explicit decision authority;
-- bounded execution contracts;
-- stop/fail-closed behavior;
-- evidence/review separation;
-- immutable release promotion.
-
-See `docs/research/MARKET-LANDSCAPE.md`.
-
-## 9. Naming
-
-`AgentFlow` should currently be treated as a working/project name.
-
-No trademark or naming clearance has been performed in this repository.
-
-Do not make legal or branding claims without a separate naming/trademark check.
-
-## 10. External audit
-
-A structured external-audit template exists under:
-
-`docs/audit/EXTERNAL-AUDIT-TEMPLATE.md`
-
-The audit is designed to distinguish:
-
-- documented;
-- implemented;
-- enforced;
-- verified;
-- missing.
-
-An external audit has not yet been recorded in this repository.
-
-## 11. Next sensible analysis
-
-Before building an orchestration engine from scratch, compare AgentFlow against current capabilities of Spec Kit, BMad and relevant platform governance tooling.
-
-Focus on:
-
-- what AgentFlow should reuse or integrate;
-- what would duplicate existing free tooling;
-- what belongs uniquely in AgentFlow Core;
-- whether AgentFlow can operate as a governance/control layer over an existing workflow engine.
-
-## 12. Cold-start instruction for a new agent
+## 8. Cold-start instruction
 
 Start with:
 
-1. `README.md`;
-2. this file;
-3. `docs/design/ORIGIN-AND-DESIGN-INTENT.md`;
-4. only the Core document relevant to the current question;
-5. current Issue/task if one exists.
+1. this file;
+2. current framework Issue/PR;
+3. `README.md`;
+4. only the relevant canonical Core document;
+5. audit/remediation material only when the task concerns a finding.
 
-Do not reconstruct state from external chat history unless project artifacts are insufficient.
+Do not reconstruct current state from external chat history unless project artifacts are insufficient.
