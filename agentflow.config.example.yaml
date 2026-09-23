@@ -1,15 +1,20 @@
 framework:
   name: AgentFlow
-  version: "1.1.0"
+  version: "1.1.1"
 
 project:
   name: "<project-name>"
   process: AGENTFLOW
   legacy_transition: false
+  compatible_framework: ">=1.1.1,<1.2.0"
 
 approval:
   owner_model: single_owner # single_owner | multi_approver
+  durable_record:
+    system: "<issue-tracker|change-system|other>"
+    location: "<project-specific-path-or-reference>"
   tokens:
+    requirement: "APPROVE_REQUIREMENT"
     transfer: "APPROVE_TRANSFER"
     architecture: "APPROVE_ARCHITECTURE"
     task_contract: "APPROVE_TASK_CONTRACT"
@@ -32,12 +37,21 @@ issue_tracking:
 execution:
   default_retry_limit: 2
   independent_review_required: true
+  review_candidate_binding_required: true
   test_independence_required: true
 
 release:
   rollback_required_before_prod: true
   explicit_prod_go_required: true
   exact_candidate_promotion_required: true
+  hotfix:
+    may_reduce_test_breadth: true
+    may_skip_requirement_approval: false
+    may_skip_atc_approval: false
+    may_skip_evidence: false
+    may_skip_independent_review: false
+    may_skip_candidate_identity: false
+    may_skip_prod_go: false
 
 documentation:
   architecture: "<path-or-system>"
