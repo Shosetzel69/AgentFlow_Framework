@@ -1,7 +1,7 @@
 # AgentFlow Documentation Policy
 
 Status: `REFERENCE CORE`
-Version: `1.0.0`
+Version: `1.1.1`
 
 ## 1. Goal
 
@@ -130,7 +130,7 @@ Recommended metadata:
 
 ```text
 Status: CANONICAL | WORKING | HISTORICAL | SUPERSEDED
-Version: vX.Y
+Version: vX.Y.Z
 Applicability: CURRENT | HISTORICAL_ONLY
 Applies to: AGENTFLOW | LEGACY-ADAPTED | BOTH
 Effective from: YYYY-MM-DD
@@ -150,3 +150,13 @@ Before adding a document, ask:
 5. Am I preserving history instead of mixing it with current state?
 
 If a canonical home already exists, update or link it instead of creating another source of truth.
+
+## 9. Framework self-consistency
+
+For AgentFlow itself:
+
+- `GOVERNANCE.md` is the only normative end-to-end process definition;
+- `KIT-MANIFEST.md` is the only normative shipped-file inventory;
+- README, adoption guides, translations, examples, and audit/reference material are non-normative unless explicitly marked otherwise;
+- convenience documents should link to Core instead of restating process rules;
+- version changes must update `VERSION`, `CHANGELOG.md`, and compatibility guidance where consumer action is required.
