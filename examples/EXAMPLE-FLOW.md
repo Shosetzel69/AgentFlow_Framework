@@ -1,16 +1,23 @@
 # Example AgentFlow Execution
 
+Status: `NON-NORMATIVE EXAMPLE`  
+Framework compatibility: `1.1.1`
+
+This example illustrates one possible execution. The normative process, statuses, and approvals are defined only in `GOVERNANCE.md`.
+
 Scenario: add export-to-CSV to an existing application.
 
 ## 1. Requirement
 
-Business requirement is approved:
+The Requirement defines:
 
 - users can export the currently filtered table;
 - CSV only;
 - no scheduled export;
 - no email delivery;
 - export must respect existing authorization.
+
+The owner records the required Requirement Approval in the project's durable approval record.
 
 ## 2. Development Analysis
 
@@ -21,7 +28,7 @@ Baseline inspection finds:
 - no new auth boundary;
 - no shared API contract change required.
 
-Architecture Delta Check: **no Architecture Gate required**.
+Architecture Delta Check: no Architecture Gate required.
 
 Development Analysis proposes one ATC.
 
@@ -35,74 +42,22 @@ Out of scope: scheduled exports, XLSX, email.
 Retry limit: 2.
 ```
 
-Owner issues:
+The exact ATC approval is recorded durably before implementation.
 
-```text
-APPROVE_TASK_CONTRACT ATC-CSV-01
-```
+## 4. Implementation and evidence
 
-## 4. Implementation
+Executor implements only the contract and produces an Evidence Bundle for candidate `abc123...`.
 
-Executor implements only the contract and produces evidence:
+## 5. Independent Review
 
-- files changed;
-- unit tests;
-- authorization test;
-- CSV escaping test;
-- build result;
-- no new dependencies.
+Independent reviewer checks candidate `abc123...` against the ATC and its Evidence Bundle.
 
-## 5. Review
+The verdict is recorded for that exact candidate identity.
 
-Independent reviewer checks exact candidate against ATC and Evidence Bundle.
+If implementation changes, the review must be repeated for the new identity.
 
-Verdict:
+## 6. DEV / TEST / PROD
 
-```text
-REVIEW_PASS
-```
+Release promotion follows `DELIVERY-LIFECYCLE.md` for the exact reviewed candidate.
 
-## 6. DEV and candidate freeze
-
-DEV verification passes.
-
-```text
-CANDIDATE_ID = abc123...
-```
-
-Candidate is frozen.
-
-## 7. TEST
-
-TEST validates the exact candidate:
-
-- export works;
-- filters respected;
-- unauthorized request rejected;
-- CSV opens correctly.
-
-Verdict:
-
-```text
-TEST_PASS
-```
-
-## 8. Production gate
-
-Rollback is previous known-good deployment.
-
-Owner issues:
-
-```text
-PROD_GO abc123...
-```
-
-Exact candidate is deployed.
-
-Smoke passes.
-
-Final status:
-
-```text
-DONE
-```
+The example intentionally does not restate the release gates here.
