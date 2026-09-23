@@ -2,7 +2,7 @@
 
 ## 1.2.0 — Pre-orchestration audit hardening
 
-Status: candidate pending Independent Review.
+Status: release-ready; Independent Review `REVIEW_PASS`.
 
 Based on the independent audit `AF-AUDIT-2026-09-23-01`.
 
