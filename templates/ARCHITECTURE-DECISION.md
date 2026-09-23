@@ -1,15 +1,20 @@
 # Architecture Decision Record
 
 Template status: `CANONICAL`  
-Framework compatibility: `1.1.1`
+Template version: `1.2.0`  
+Framework compatibility: `1.2.x`
 
-Phase: `ARCHITECTURE`  
-Status: `ARCHITECTURE_REVIEW | ARCHITECTURE_READY_FOR_APPROVAL | ARCHITECTURE_APPROVED | ARCHITECTURE_CHANGES_REQUIRED | ARCHITECTURE_BLOCKED`  
-Record lifecycle: `CURRENT | SUPERSEDED`
+## Identity / traceability
 
-Decision reference:
-Date:
-Decision owner:
+- ADR ID: `ADR-<n>`
+- Triggering Requirement(s):
+- Architecture question/work item:
+- Decision owner:
+- Date:
+- Phase: `ARCHITECTURE`
+- Status: `ARCHITECTURE_REVIEW | ARCHITECTURE_READY_FOR_APPROVAL | ARCHITECTURE_APPROVED | ARCHITECTURE_CHANGES_REQUIRED | ARCHITECTURE_BLOCKED`
+- Document lifecycle: `CURRENT | SUPERSEDED`
+- Superseded by:
 
 ## Context
 
@@ -90,7 +95,7 @@ A material `UNKNOWN` blocks final architecture approval.
 Expected token:
 
 ```text
-APPROVE_ARCHITECTURE <Decision reference>
+APPROVE_ARCHITECTURE <ADR ID>
 ```
 
 Durable approval record:
