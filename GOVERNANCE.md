@@ -135,7 +135,33 @@ A readiness/approval state must not outrun the durable material analysis/result 
 
 This durability rule does not create a new approval gate or artifact type.
 
-## 9. Source-of-truth hierarchy
+## 9. Work-item relationship reconciliation
+
+Parent/upstream closure does not silently cascade to descendants.
+
+Before closing or superseding a work item, reconcile each relevant open descendant or explicitly linked follow-up so there is **no unexplained open descendant**.
+
+Allowed disposition metadata includes:
+
+- `COMPLETED`
+- `ABSORBED_BY <ref>`
+- `SUPERSEDED_BY <ref>`
+- `NOT_NEEDED`
+- `CANCELLED`
+- `KEEP_OPEN`
+
+Disposition/relation metadata is **not** a canonical Phase/Status and does not extend the CLOSURE taxonomy.
+
+Rules:
+
+- an open descendant may remain open only with an explicit `KEEP_OPEN` disposition and a valid continuing parent/relationship or explicit re-parenting/reference;
+- `ABSORBED_BY` and `SUPERSEDED_BY` must identify the successor reference;
+- closing a parent never authorizes automatic child/follow-up closure;
+- descendants with independent lifecycle, approval, execution, evidence, or ownership remain independently controlled;
+- reconciliation records explain why each relevant descendant is complete, transferred, superseded, cancelled, not needed, or intentionally kept open.
+
+
+## 10. Source-of-truth hierarchy
 
 Each project must define canonical sources and their precedence.
 
@@ -152,13 +178,13 @@ Recommended model:
 
 Conversation history, AI memory, and local copies are context, not technical source of truth.
 
-## 10. Artifact identity and traceability
+## 11. Artifact identity and traceability
 
 AgentFlow artifacts use stable typed identifiers and mandatory parent links as defined in `ARTIFACT-TRACEABILITY.md`.
 
 Static identity/link rules are Core in v1.2. Automated artifact-graph validation is explicitly deferred to the future executable framework architecture.
 
-## 11. Architecture policy
+## 12. Architecture policy
 
 Material architecture changes require an Architecture Gate and explicit approval before implementation.
 
@@ -174,7 +200,7 @@ Typical triggers:
 - security/privacy/secrets model;
 - material cost or portability/exit impact.
 
-## 12. Implementation Preservation Rule
+## 13. Implementation Preservation Rule
 
 Approval of a feature or fix authorizes only the changes required for the approved outcome.
 
@@ -182,13 +208,13 @@ It does not implicitly authorize changes to component boundaries, APIs/contracts
 
 A materially different implementation mechanism is a separate change request unless already covered by the approved Architecture Gate.
 
-## 13. No Opportunistic Refactoring
+## 14. No Opportunistic Refactoring
 
 Do not use an approved feature or bugfix as authority for unrelated cleanup, redesign, reorganization, or refactoring.
 
 If a larger refactor is necessary to implement the approved change safely, document its necessity and impact and obtain approval before execution.
 
-## 14. Definition of Done
+## 15. Definition of Done
 
 A change is not complete merely because code exists.
 
