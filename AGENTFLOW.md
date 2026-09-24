@@ -182,104 +182,61 @@ Stop and escalate when a material issue appears in any of these categories:
 
 Do not escalate purely local, reversible, in-scope implementation choices that remain compatible with approved architecture.
 
-## 11. Evidence classes
+## 11. Evidence sufficiency
 
-Every evidence item is classified as one of:
+Evidence classes describe proof form:
+- `ATTESTED` — statement/manual report only;
+- `ARTIFACT` — persisted/externally produced proof with stable identity/reference;
+- `REPRODUCIBLE` — verification a reviewer can re-run from recorded inputs/commands.
 
-### ATTESTED
+Mandatory checks declare one sufficiency policy:
+- `ARTIFACT_OR_REPRODUCIBLE`
+- `ARTIFACT_REQUIRED`
+- `REPRODUCIBLE_REQUIRED`
+- `BOTH_REQUIRED`
 
-Executor statement or manually reported result with no independently inspectable output.
+There is no total strength ordering between ARTIFACT and REPRODUCIBLE. `ATTESTED` alone never satisfies a mandatory check.
 
-Examples: “tests passed”, “UI looks correct”.
-
-### ARTIFACT
-
-Externally produced or persisted output with a stable reference/identity.
-
-Examples: CI run, test report, log artifact, build artifact, screenshot with stable attachment reference, signed/recorded system output.
-
-### REPRODUCIBLE
-
-A verification method that a reviewer can re-run from recorded inputs/commands/pipeline definition, with expected result stated.
-
-Mandatory ATC checks require **ARTIFACT or REPRODUCIBLE** evidence. ATTESTED evidence alone cannot satisfy a mandatory check.
-
-The Evidence Bundle records:
-
-- evidence class per check;
-- artifact/reference;
-- reproducible command/pipeline when applicable;
-- `Independently reproducible: YES | NO | PARTIAL`.
+Prefer durable references over embedding large logs/evidence bodies when a stable reference exists.
 
 ## 12. Evidence Bundle
 
-Evidence must allow independent verification without reconstructing conversation history.
+Evidence is candidate-bound and must allow verification without reconstructing conversation history.
 
-Minimum:
+Minimum includes exact ATC/candidate identity, executor provenance, changed components, mandatory-check results/policies/references, acceptance mapping, deviations/risks/remediation history, execution-rules version, and AgentFlow-controlled context telemetry separated from source/code exploration.
 
-- EV artifact ID and parent ATC;
-- exact implementation candidate identity;
-- executor provenance;
-- files/components changed;
-- checks/results with evidence class;
-- mapping to acceptance criteria;
-- assumptions/deviations;
-- known limitations/residual risks;
-- remediation-cycle count/history;
-- Evidence artifact status.
-
-Evidence is not equivalent to TEST PASS and does not authorize release.
+Telemetry is post-execution measurement; it does not replace Development Analysis authoring-time context-readiness evidence.
 
 ## 13. Independent Review
 
-The reviewer compares:
+Reviewer inputs are the exact approved ATC, exact candidate and matching Evidence Bundle.
 
-- approved ATC;
-- exact implementation candidate identity;
-- Evidence Bundle for that same candidate.
+The review records executor/reviewer identities, session/run reference where applicable, configured independence level, separation basis, candidate/composition identity proof, evidence-policy sufficiency and context-readiness/telemetry conformance.
 
-The reviewer does not modify implementation in the same review step.
-
-Canonical verdicts:
-
+Verdicts:
 - `REVIEW_PASS`
 - `REVIEW_FAIL`
 - `REVIEW_BLOCKED`
 
-A review must return `REVIEW_BLOCKED`, not PASS, when any mandatory ATC check is supported only by ATTESTED evidence.
+Mandatory evidence-policy failure or unverifiable required candidate equivalence blocks review.
 
 ### 13.1 Review independence levels
 
-`IR0_SELF`
-- same executor reviewing its own work without an independent review activity;
-- **does not satisfy Independent Review**.
+`IR0_SELF` does not satisfy Independent Review.
 
-`IR1_FRESH_CONTEXT`
-- separate review activity/session;
-- reviewer consumes only canonical ATC/candidate/Evidence inputs needed for review, not executor scratchpad/private reasoning;
-- same human or same AI product/model family may be used;
-- **Core minimum** for solo/small-team use.
+`IR1_FRESH_CONTEXT` uses a separate review activity/session and only canonical review inputs needed for review, not executor scratchpad/private reasoning.
 
-`IR2_DISTINCT_REVIEWER`
-- different human reviewer or distinct AI reviewer identity/instance from the executor;
-- no implementation role in the candidate under review.
+`IR2_DISTINCT_REVIEWER` uses a different reviewer identity/instance with no implementation role in the candidate.
 
-`IR3_ORGANIZATIONAL`
-- reviewer is organizationally separate according to project/organization policy.
+`IR3_ORGANIZATIONAL` uses organizational separation defined by project policy.
 
-The Project Adapter must select a required level of `IR1_FRESH_CONTEXT` or stronger. A project may require higher levels by risk class.
+Project Adapter selects IR1 or stronger.
 
 ### 13.2 Candidate binding and invalidation
 
-Every review verdict is valid only for the exact candidate identity recorded in the review.
+A verdict is valid only for the exact reviewed candidate. If content changes, prior review remains history but does not transfer.
 
-If implementation content changes after a verdict:
-
-- the prior review remains historical evidence;
-- it is not valid for the changed candidate;
-- a new candidate identity must be established;
-- a new Evidence Bundle must describe the changed candidate;
-- Independent Review must run again before that candidate can be frozen/promoted.
+Composition equivalence to another immutable identity must be independently verifiable by ARTIFACT or REPRODUCIBLE proof. If not, create fresh evidence/review.
 
 ## 14. Handoff to release lifecycle
 
