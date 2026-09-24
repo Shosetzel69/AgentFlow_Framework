@@ -1,8 +1,8 @@
 # Architecture Decision Record
 
 Template status: `CANONICAL`  
-Template version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Template version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 ## Identity / traceability
 
@@ -85,6 +85,13 @@ Optional.
 | Cost / portability | NO IMPACT / IMPACT / UNKNOWN | |
 
 A material `UNKNOWN` blocks final architecture approval.
+
+## Persistent environment transition impact
+
+- Introduces/changes a persistent invariant affecting existing environments: YES / NO
+- Affected environments:
+- Required transition/bootstrap class/mechanism:
+- Release-readiness evidence expected:
 
 ## What could change this decision
 
