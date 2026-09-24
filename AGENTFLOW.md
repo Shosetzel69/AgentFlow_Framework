@@ -1,8 +1,8 @@
 # AgentFlow Operating Contract
 
 Status: `REFERENCE CORE`  
-Document version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Document version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 ## 1. Purpose
 
@@ -52,6 +52,8 @@ Minimum output:
 - overlap/conflict declarations between slices;
 - risks;
 - Proposed ATCs;
+- an `Execution Context` per proposed ATC with Required / Optional+trigger / Excluded context and deterministic pre-execution size;
+- durable checkpoint of material analysis outcomes required for controlled continuation;
 - stop conditions;
 - verdict.
 
@@ -73,7 +75,8 @@ Minimum control fields include:
 
 - objective;
 - scope / out of scope;
-- required context;
+- bounded Execution Context distilled by Development Analysis;
+- declared pre-execution context size;
 - dependencies;
 - constraints;
 - acceptance criteria;
@@ -111,16 +114,11 @@ This is a procedural single-active-executor rule, not an orchestrator lock. Auto
 
 ## 7. Execution rules
 
-The executor:
+`AI-EXECUTION-RULES.md` is the compact canonical rules source for normal execution. Do not restate its universal executor rules here.
 
-- implements only the approved ATC;
-- preserves project architecture and existing contracts unless the ATC explicitly changes them;
-- does not expand scope opportunistically;
-- treats encountered content according to the instruction-provenance rules in `AI-EXECUTION-RULES.md`;
-- uses bounded self-correction;
-- obeys the remediation-cycle budget;
-- stops when a Stop Condition is reached;
-- produces an Evidence Bundle.
+Normal execution starts from the exact approved ATC, the applicable AI execution rules, and the ATC's declared project/source context. Parent analysis/history and unrelated Core are not normal preload.
+
+A missing execution rule or authority is contract incompleteness and causes STOP; it is not resolved by exploratory Core/history loading. Missing project/source detail may use bounded targeted context expansion.
 
 ## 8. Retry and remediation-cycle model
 
@@ -153,7 +151,17 @@ When the budget is exhausted:
 
 The budget cannot be silently reset.
 
-## 9. Stop Conditions
+## 9. Gate authority and durable continuity
+
+Only gates defined by Core, an enabled Project Adapter/config rule permitted by Core, or an explicitly approved governance change are authoritative. Consultation, recommendations, audits, reviewer suggestions, precedent, or agent preference do not create gates.
+
+`NO APPROVAL GATE REQUIRED` means no authoritative human approval gate applies at that transition; it is not itself an approval token.
+
+A completed stage is not canonically complete when its material result exists only in transient conversation. Long-running analysis checkpoints material bounded outcomes before they are relied upon, and topic/chat/phase/role transition persists material unrecorded outcomes. Minimal durable checkpoint: Findings / Decision or disposition / Evidence / Open or blocked / Next.
+
+If configured persistence is unavailable, record persistence as pending and do not claim canonical completion/readiness supported only by transient conversation.
+
+## 10. Stop Conditions
 
 Stop and escalate when a material issue appears in any of these categories:
 
@@ -174,7 +182,7 @@ Stop and escalate when a material issue appears in any of these categories:
 
 Do not escalate purely local, reversible, in-scope implementation choices that remain compatible with approved architecture.
 
-## 10. Evidence classes
+## 11. Evidence classes
 
 Every evidence item is classified as one of:
 
@@ -203,7 +211,7 @@ The Evidence Bundle records:
 - reproducible command/pipeline when applicable;
 - `Independently reproducible: YES | NO | PARTIAL`.
 
-## 11. Evidence Bundle
+## 12. Evidence Bundle
 
 Evidence must allow independent verification without reconstructing conversation history.
 
@@ -222,7 +230,7 @@ Minimum:
 
 Evidence is not equivalent to TEST PASS and does not authorize release.
 
-## 12. Independent Review
+## 13. Independent Review
 
 The reviewer compares:
 
@@ -240,7 +248,7 @@ Canonical verdicts:
 
 A review must return `REVIEW_BLOCKED`, not PASS, when any mandatory ATC check is supported only by ATTESTED evidence.
 
-### 12.1 Review independence levels
+### 13.1 Review independence levels
 
 `IR0_SELF`
 - same executor reviewing its own work without an independent review activity;
@@ -261,7 +269,7 @@ A review must return `REVIEW_BLOCKED`, not PASS, when any mandatory ATC check is
 
 The Project Adapter must select a required level of `IR1_FRESH_CONTEXT` or stronger. A project may require higher levels by risk class.
 
-### 12.2 Candidate binding and invalidation
+### 13.2 Candidate binding and invalidation
 
 Every review verdict is valid only for the exact candidate identity recorded in the review.
 
@@ -273,7 +281,7 @@ If implementation content changes after a verdict:
 - a new Evidence Bundle must describe the changed candidate;
 - Independent Review must run again before that candidate can be frozen/promoted.
 
-## 13. Handoff to release lifecycle
+## 14. Handoff to release lifecycle
 
 After a valid `REVIEW_PASS` for the exact current implementation candidate and DEV verification, promotion uses `DELIVERY-LIFECYCLE.md`.
 
