@@ -1,8 +1,8 @@
 # AgentFlow Documentation Policy
 
 Status: `REFERENCE CORE`  
-Document version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Document version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 ## 1. Goal
 
@@ -12,135 +12,122 @@ Core rule:
 
 > Read and maintain only the context required for the current task.
 
+Authoring may spend broader context to make execution smaller and deterministic.
+
 ## 2. Documentation layers
 
 ### L0 — Entry / Handoff
-
-Issues/work items, PR/MR/change descriptions, release handoffs.
-
-Purpose: explain what is being done and where authoritative detail lives.
+Work items, PR/MR/change descriptions and release handoffs. They point to authoritative detail.
 
 ### L1 — Canonical Current State
-
-Examples:
-
-- Governance;
-- Architecture;
-- Requirements;
-- Data/API contracts;
-- AgentFlow operating/release rules;
-- Project Adapter/config.
-
-Purpose: current approved state.
+Governance, approved architecture/requirements/contracts, AgentFlow Core, Adapter/config.
 
 ### L2 — Operational Procedures
-
-Runbooks, migration/cutover, QA/test procedures.
+Runbooks, migration/cutover and QA/test procedures.
 
 ### L3 — Reference / History
+Analyses, reports, audits, research, superseded material and archived procedures.
 
-Analyses, reports, superseded material, audits, archived runbooks.
+L3 is excluded from normal execution context unless the exact task explicitly needs it.
 
-History is never loaded as current truth by default.
+## 3. Authoring context vs execution context
 
-## 3. Progressive context loading
+Requirement, Architecture and Development Analysis may inspect broader context needed to decide and slice work.
 
-Default execution context:
+Development Analysis distills that context into an `Execution Context` for every proposed ATC.
 
-1. current task/work item;
-2. AI execution rules;
-3. affected code/configuration;
-4. only relevant canonical sections.
+Normal executor preload is limited to:
+1. exact approved ATC;
+2. applicable `AI-EXECUTION-RULES.md`;
+3. exact project/source context declared for that ATC.
 
-If more than five supporting documents appear necessary, create a short Context Map before loading more material.
+Parent Requirement/DA/ADR remain authoritative traceability/authoring records but are not normal full-text executor preload.
 
-## 4. Context Map
+## 4. Execution Context contract
+
+Every proposed ATC has:
 
 ```text
-Required context:
-- exact files/sections
+Required:
+- exact files/sections/ranges needed before execution
 
-Optional context:
-- only if a named question remains
+Optional:
+- exact source
+- named condition/question that permits loading it
 
-Excluded context:
-- historical/superseded material that must not drive execution
+Excluded:
+- task-specific exclusions
+
+Pre-execution size:
+- deterministic characters/bytes
+- informational estimated tokens
 ```
 
-The handoff should be executable without reconstructing prior chat history.
+Prefer section/heading/range references over full-document references.
 
-## 5. Current state vs history
+A full-document read is exceptional when a narrower range can answer the question.
+
+## 5. Default execution exclusions
+
+Unless explicitly required, exclude:
+- prior conversation/chat history;
+- full work-item/comment history;
+- audits and research;
+- superseded/historical analysis;
+- unrelated Requirements/ADRs/ATCs;
+- unrelated Core/reference documentation.
+
+Exclusions are semantic, not directory-based. A project may keep canonical execution-relevant documentation under `docs/`.
+
+## 6. Context expansion
+
+Missing execution authority is not a context-expansion trigger. It is a contract/readiness defect and requires STOP.
+
+Missing project/source detail may use bounded targeted expansion:
+- smallest exact source/section needed;
+- only for a named unresolved implementation question;
+- no implied scope or authority expansion.
+
+## 7. Durable analysis and checkpoints
+
+Material process state required for controlled continuation must not exist only in conversation.
+
+Persist a completed material analysis unit before relying on it for canonical readiness/approval state, and persist material unrecorded outcomes before topic/chat/phase/role transition.
+
+Minimal checkpoint:
+- Findings
+- Decision / disposition
+- Evidence
+- Open / blocked
+- Next
+
+Do not persist full transcripts merely to satisfy this rule.
+
+If durable persistence is unavailable, mark persistence pending and do not claim canonical completion/readiness supported only by transient conversation.
+
+## 8. Current state vs history
 
 After a decision:
-
-- keep the decision outcome/reference;
+- keep the durable outcome/reference;
 - update canonical current-state documentation;
 - preserve analysis/history separately;
-- do not make historical analysis a second current-state manual.
+- do not create a second current-state manual from historical analysis.
 
-## 6. Update discipline
+## 9. Update discipline
 
-Prefer:
+Prefer one canonical source, references from secondary locations, and archive/supersession for obsolete material.
 
-- one canonical source;
-- links from secondary places;
-- archive/supersede obsolete material.
+Avoid copy/paste synchronization, competing current truths, documentation-only churn, and documents created solely for ceremony.
 
-Avoid:
+## 10. Versioning and self-consistency
 
-- copy/paste synchronization;
-- multiple current sources of truth;
-- documentation-only churn;
-- documents created only to satisfy process.
-
-## 7. Versioning
-
-Canonical documents keep one stable path and use version-control history for old versions.
-
-Recommended metadata:
-
-```text
-Status: CANONICAL | WORKING | HISTORICAL | SUPERSEDED
-Document version: X.Y.Z
-Framework compatibility: <range>
-Applicability: CURRENT | HISTORICAL_ONLY
-```
-
-Templates use:
-
-```text
-Template status:
-Template version:
-Framework compatibility:
-```
-
-The shipped versions are recorded in `docs/reference/CORE-VERSION-MATRIX.md`.
-
-## 8. Artifact identity
-
-Stable AgentFlow artifact identity and mandatory parent links are defined in `ARTIFACT-TRACEABILITY.md`.
-
-Document lifecycle metadata is separate from work-item workflow Phase/Status.
-
-## 9. Framework self-consistency
+Canonical documents keep stable paths and use version-control history for old versions. Shipped versions are recorded in `docs/reference/CORE-VERSION-MATRIX.md`.
 
 For AgentFlow itself:
+- `GOVERNANCE.md` is the sole normative end-to-end process definition;
+- `AI-EXECUTION-RULES.md` is the compact canonical normal-executor rules source;
+- `KIT-MANIFEST.md` is the normative shipped inventory;
+- README/guides/examples/audit/reference material are non-normative unless explicitly marked;
+- secondary documents link to Core rather than restating rules.
 
-- `GOVERNANCE.md` is the only normative end-to-end process definition;
-- `KIT-MANIFEST.md` is the only normative shipped-file inventory;
-- `docs/reference/CORE-VERSION-MATRIX.md` is the shipped artifact-version mapping;
-- README, adoption guides, translations, examples, audit/reference material are non-normative unless explicitly marked otherwise;
-- convenience documents should link to Core instead of restating process rules;
-- release version changes update `VERSION`, `CHANGELOG.md`, compatibility guidance, manifest, and version matrix.
-
-## 10. Documentation safeguard
-
-Before adding a document, ask:
-
-1. Is this needed to execute, decide, operate, audit, or version?
-2. Does it already have a canonical home?
-3. Can I link instead of duplicate?
-4. Will an agent know exactly what to read?
-5. Am I preserving history instead of mixing it with current state?
-
-If a canonical home already exists, update or link it instead of creating another source of truth.
+Before adding documentation, ask whether a canonical home already exists and whether a reference is sufficient.

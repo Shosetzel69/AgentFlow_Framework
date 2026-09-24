@@ -1,203 +1,116 @@
 # Framework Configuration
 
 Status: `REFERENCE CORE`  
-Document version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Document version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
-Use this document when adopting AgentFlow in a new project.
+Use this document when adopting or revalidating AgentFlow.
 
-## 1. Configuration layering and precedence
+## 1. Layering and precedence
 
-AgentFlow uses two project-specific configuration artifacts:
+Project Adapter is the human-readable mapping/rationale. `agentflow.config.yaml` is authoritative for machine-readable project values.
 
-### Project Adapter
+Core safety/authority rules win unless an approved framework deviation exists. Any overlapping Adapter/config value must match. Convenience documentation never overrides Core/Adapter/config.
 
-Human-readable mapping, rationale, local conventions, exceptions, and ownership.
+AgentFlow v1.3 defines configuration semantics but no generic runtime enforcement engine.
 
-### agentflow.config.yaml
-
-Authoritative source for **machine-readable project values**.
-
-Rules:
-
-1. Core safety/authority rules win unless an explicitly approved framework deviation exists.
-2. Project Adapter explains the project mapping and rationale.
-3. `agentflow.config.yaml` is authoritative for values consumed by automation/tools.
-4. Any value represented in both Adapter and config must match.
-5. A mismatch is a bootstrap/revalidation blocker until resolved.
-6. Convenience documentation never overrides Core, Adapter, or config.
-
-v1.2 defines this schema but does not provide a generic enforcement engine.
-
-## 2. Project identity
-
-Define:
-
-- project name / namespace;
-- repository/repositories or equivalent change system;
-- owner / authorized approver model;
-- main delivery process;
-- legacy transition flag;
-- compatible AgentFlow framework version/range;
-- delivery model;
-- immutable candidate identity mechanism.
-
-## 3. Applicability preconditions
+## 2. Applicability
 
 Before `READY_TO_ADOPT`, establish:
+1. durable project/change record;
+2. durable approval record;
+3. immutable/equivalently verifiable candidate identity;
+4. review mechanism;
+5. inspectable delivery state.
 
-1. a durable project/change record;
-2. a durable approval record;
-3. an immutable or equivalently verifiable candidate/artifact identity;
-4. a review mechanism;
-5. inspectable delivery tooling/state sufficient to verify the above.
+Non-git delivery may use immutable snapshot/export/package/hash identity.
 
-If any cannot be established, bootstrap returns `BLOCKED`.
+## 3. Project identity and records
 
-For low-code/SaaS/store-distributed or non-git delivery, define an equivalent immutable snapshot/export/package/hash identifier.
+Define project namespace, delivery model, compatible AgentFlow range and immutable candidate identity.
+
+Map durable locations for:
+- Requirements / ADR / Development Analysis / ATCs;
+- Evidence / Independent Review / Candidate Manifest / Release Record;
+- approvals;
+- completed stage results;
+- material analysis checkpoints.
+
+A project may reuse its canonical work-item/stage-result record for checkpoints; Core does not require a new store.
 
 ## 4. Environments and access
 
-Map AgentFlow roles to real environments and declare phase-scoped access.
+Map DEV/TEST/PROD and phase-scoped environment/credential roles. Implementation phases default to no PROD mutation access. Never store secrets in configuration.
 
-For each phase define:
+## 5. Approval and gates
 
-- reachable environments;
-- credential/access-role reference;
-- whether mutation is allowed.
+Map canonical approval tokens and enabled project gates permitted by Core.
 
-Default: implementation phases have no PROD mutation access.
+Project config does not create a new gate merely by naming a preference. Gate authority follows `GOVERNANCE.md`.
 
-Never store credential secrets in AgentFlow configuration.
-
-## 5. Work tracking and durable records
-
-Define durable locations for:
-
-- Requirements;
-- Architecture Decisions;
-- Development Analyses;
-- ATCs;
-- Evidence Bundles;
-- Independent Reviews;
-- Candidate Manifests;
-- Release Records;
-- approvals.
-
-References must be stable and resolvable.
-
-## 6. Approval tokens
-
-Canonical defaults:
-
-```text
-APPROVE_AGENTFLOW_BOOTSTRAP <project-ref>
-APPROVE_REQUIREMENT <ref>
-APPROVE_TRANSFER <ref>             # only if project enables transfer gate
-APPROVE_ARCHITECTURE <ref>
-APPROVE_TASK_CONTRACT <ref>
-APPROVE_PROD_DATA_USE <ref>
-APPROVE_FORWARD_FIX <ref>
-PROD_GO <candidate-ref>
-```
-
-A project may rename tokens in its Adapter/config, but approval must remain explicit, scoped, non-ambiguous, and durably recorded.
-
-## 7. Gates
-
-Machine-readable config should represent whether these gates are required/enabled:
-
-- bootstrap activation;
-- Requirement Approval;
-- optional Transfer;
-- Architecture Gate on trigger;
-- ATC Approval;
-- Evidence readiness;
-- Independent Review;
-- DEV verification;
-- Candidate Manifest/freeze;
-- TEST;
-- PROD GO;
-- smoke/closure.
-
-## 8. Architecture triggers
-
-Start with Core triggers and add project-specific triggers.
-
-## 9. Execution limits
+## 6. Execution policy
 
 Define:
+- retry limit;
+- remediation-cycle budget;
+- single-active-executor/handoff location;
+- execution-context policy values where the project overrides/extends Core defaults.
 
-- per-execution retry limit;
-- cross-cycle remediation budget;
-- single-active-executor requirement;
-- handoff record location.
+Normal execution uses the approved ATC + applicable `AI-EXECUTION-RULES.md` + declared project/source context. Configuration must not turn context budgeting into a runtime engine unless separately architected.
 
-## 10. Evidence
+Recommended project fields:
+- controlled-context primary measure: characters/bytes;
+- normal estimated-token target;
+- stretch target;
+- full-document reads exceptional: YES;
+- default semantic exclusions or project additions.
 
-Define project evidence defaults.
+## 7. Evidence policy
 
-Core minimum:
+For mandatory checks choose an explicit sufficiency policy:
+- `ARTIFACT_OR_REPRODUCIBLE`
+- `ARTIFACT_REQUIRED`
+- `REPRODUCIBLE_REQUIRED`
+- `BOTH_REQUIRED`
 
-- mandatory checks require `ARTIFACT` or `REPRODUCIBLE`;
-- `ATTESTED` alone cannot satisfy a mandatory check.
+ATTESTED alone is never sufficient.
 
-Projects may require stronger proof.
+Map evidence retention and stable-reference expectations.
 
-## 11. Independent Review
-
-Define:
-
-- minimum independence level: `IR1_FRESH_CONTEXT | IR2_DISTINCT_REVIEWER | IR3_ORGANIZATIONAL`;
-- candidate identity binding mechanism;
-- durable review record location.
-
-Core minimum is `IR1_FRESH_CONTEXT`.
-
-## 12. Release / recovery
-
-Define:
-
-- candidate identity;
-- Candidate Manifest location;
-- rollback mechanism;
-- backup/restore requirements;
-- forward-fix enablement/policy;
-- hotfix path.
-
-## 13. Production-data handling
+## 8. Independent / external review
 
 Define:
+- minimum IR level (`IR1_FRESH_CONTEXT` or stronger);
+- candidate identity binding;
+- durable review-record location;
+- external reviewer write/access boundary.
 
-- whether production data may ever enter non-PROD;
-- approval record required;
-- anonymisation/minimisation standard;
-- retention/deletion control.
+External-review authority may be limited to durable review records and never implies implementation mutation authority.
 
-Default: prohibited.
+## 9. Environment transition readiness
 
-## 14. Revalidation
+If approved architecture changes persistent invariants, project mapping identifies affected target environments and transition/bootstrap proof needed for:
+- `ALREADY_COMPLIANT`
+- `TRUSTED_BOOTSTRAP`
+- `APPROVED_TRANSITION_READY`
+- `BLOCKED`
 
-Project Adapter/config must record:
+A BLOCKED affected target yields RELEASE_BLOCKED before PROD_GO.
 
-- last validated timestamp/date;
-- framework version last validated against;
-- revalidation triggers;
-- outstanding gaps with owner and closure condition.
+## 10. Release / recovery and data
 
-Minimum revalidation triggers:
+Define candidate manifest, rollback/backup, forward-fix/hotfix path and production-data handling.
 
-- environment topology change;
-- source-control/change-system change;
-- CI/CD or deployment mechanism change;
-- owner/approval model change;
-- durable approval-record change;
-- candidate identity mechanism change;
-- phase credential/access-boundary change;
-- AgentFlow framework version outside declared compatible range.
+Production data in non-PROD remains prohibited by default unless the explicit Core exception is satisfied.
 
-## 15. Metrics / gate expectations
+## 11. Revalidation
 
-Projects may define optional gate response expectations and metric collection settings using `METRICS.md`.
+Record last validated version/date and revalidate after environment/toolchain/owner/approval-record/candidate-identity/access changes or incompatible framework version.
 
-Expiry of a response expectation never authorizes an automatic transition.
+Adopting v1.3 from v1.2 requires explicit Adapter/config revalidation; no consuming project auto-upgrades.
+
+## 12. Metrics
+
+Projects may collect `METRICS.md` manually or with project tooling. Execution-context telemetry must keep AgentFlow-controlled overhead separate from source/code exploration.
+
+Reference-scenario regression is a framework-release concern; projects need not implement automated benchmark tooling.

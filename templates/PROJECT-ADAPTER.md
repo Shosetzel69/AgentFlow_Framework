@@ -1,13 +1,13 @@
 # AgentFlow Project Adapter
 
 Template status: `CANONICAL`  
-Template version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Template version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 Project:
 Project namespace:
 Adapter version:
-Framework version/range: `>=1.2.0,<2.0.0`
+Framework version/range: `>=1.3.0,<2.0.0`
 Last validated:
 Validated framework version:
 Delivery model:
@@ -50,6 +50,8 @@ An approval is workflow-effective only after it is recorded here according to Co
 - Review location:
 - Candidate Manifest location:
 - Release Record location:
+- Durable stage-result location:
+- Analysis-checkpoint location (may reuse stage-result/work-item record):
 
 ## 3. Artifact identity mapping
 
@@ -122,10 +124,17 @@ PROD:
 - Remediation-cycle budget:
 - Single active executor per ATC: YES / NO
 - Handoff record location:
+- Controlled-context primary measure: `characters | bytes`
+- Normal estimated-token target:
+- Stretch estimated-token target:
+- Full-document reads exceptional: YES / NO
+- Source/code exploration measured separately: YES / NO
 
 ## 10. Evidence policy
 
-- Mandatory-check minimum class: `ARTIFACT | REPRODUCIBLE`
+- Mandatory-check policy: `ARTIFACT_OR_REPRODUCIBLE | ARTIFACT_REQUIRED | REPRODUCIBLE_REQUIRED | BOTH_REQUIRED`
+- Stable evidence reference preferred: YES / NO
+- Context telemetry required: YES / NO
 - Additional artifact requirements:
 - Evidence retention expectation:
 
@@ -134,10 +143,17 @@ PROD:
 - Required independence level: `IR1_FRESH_CONTEXT | IR2_DISTINCT_REVIEWER | IR3_ORGANIZATIONAL`
 - Durable review record location:
 - Candidate identity binding mechanism:
+- External reviewer write scope: `review_records_only | custom`
+- External reviewer implementation mutation allowed: NO
 
 Core minimum: `IR1_FRESH_CONTEXT`.
 
-## 12. Release / recovery
+## 12. Environment transition readiness
+
+- Readiness classification required for affected persistent targets: YES / NO
+- Transition/bootstrap evidence location:
+
+## 13. Release / recovery
 
 - Candidate Manifest location:
 - Rollback mechanism:
@@ -147,14 +163,14 @@ Core minimum: `IR1_FRESH_CONTEXT`.
 - Forward-fix reconciliation mechanism:
 - Hotfix implementation path:
 
-## 13. Production-data handling
+## 14. Production-data handling
 
 - Production data allowed in non-PROD by default: NO
 - Exception approval location:
 - Required anonymisation/minimisation standard:
 - Retention/deletion condition:
 
-## 14. Canonical documentation map
+## 15. Canonical documentation map
 
 | Subject | Canonical source |
 |---|---|
@@ -165,7 +181,7 @@ Core minimum: `IR1_FRESH_CONTEXT`.
 | Operations | |
 | AI execution rules | |
 
-## 15. Revalidation
+## 16. Revalidation
 
 - Last validated:
 - Validated framework version:
@@ -176,11 +192,13 @@ Core minimum: `IR1_FRESH_CONTEXT`.
   - owner/approval model change
   - approval-record location change
   - candidate identity mechanism change
+  - stage/checkpoint record location change
+  - evidence/review policy change
   - phase access-boundary change
   - incompatible framework version
 - Additional project trigger:
 
-## 16. Outstanding gaps
+## 17. Outstanding gaps
 
 | Gap | Owner | Temporary accepted condition | Closure condition | Revalidation/target |
 |---|---|---|---|---|
@@ -188,7 +206,7 @@ Core minimum: `IR1_FRESH_CONTEXT`.
 
 A READY_WITH_GAPS adoption cannot contain a gap without owner and closure condition.
 
-## 17. Metrics / gate response expectations
+## 18. Metrics / gate response expectations
 
 - Metric collection: `manual | project-specific tooling | none`
 - Requirement approval target:
@@ -199,13 +217,13 @@ A READY_WITH_GAPS adoption cannot contain a gap without owner and closure condit
 
 Targets are expectations only and never auto-authorize transitions.
 
-## 18. Legacy transition
+## 19. Legacy transition
 
 - Enabled: YES / NO
 - Legacy work identification rule:
 - Retirement condition:
 
-## 19. Adapter/config consistency
+## 20. Adapter/config consistency
 
 Machine-readable values are authoritative in `agentflow.config.yaml`; this Adapter is authoritative for rationale and local mapping.
 

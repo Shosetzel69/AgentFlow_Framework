@@ -1,8 +1,8 @@
 # AgentFlow Governance
 
 Status: `REFERENCE CORE`  
-Document version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Document version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 ## 1. Decision model
 
@@ -121,7 +121,47 @@ A transient chat message may be the source of an owner decision, but the workflo
 
 The Project Adapter defines the durable approval system/location. Core does not require a specific issue tracker or source-control platform.
 
-## 7. Source-of-truth hierarchy
+## 7. Gate authority
+
+Agents do not create or activate gates by inference. A gate is authoritative only when it is defined by Core, by an enabled Project Adapter/config rule permitted by Core, or by an explicitly approved governance change.
+
+Consultation, recommendation, audit finding, reviewer suggestion, precedent, or agent preference is non-authoritative for creating a gate.
+
+A stage may record `NO APPROVAL GATE REQUIRED` when no authoritative human approval gate applies. This is a disposition, not an approval token and not a new workflow status.
+
+## 8. Durable stage-result support
+
+A readiness/approval state must not outrun the durable material analysis/result that supports it. Material outcomes required for controlled continuation must be persisted in the configured durable record before canonical completion/readiness is claimed.
+
+This durability rule does not create a new approval gate or artifact type.
+
+## 9. Work-item relationship reconciliation
+
+Parent/upstream closure does not silently cascade to descendants.
+
+Before closing or superseding a work item, reconcile each relevant open descendant or explicitly linked follow-up so there is **no unexplained open descendant**.
+
+Allowed disposition metadata includes:
+
+- `COMPLETED`
+- `ABSORBED_BY <ref>`
+- `SUPERSEDED_BY <ref>`
+- `NOT_NEEDED`
+- `CANCELLED`
+- `KEEP_OPEN`
+
+Disposition/relation metadata is **not** a canonical Phase/Status and does not extend the CLOSURE taxonomy.
+
+Rules:
+
+- an open descendant may remain open only with an explicit `KEEP_OPEN` disposition and a valid continuing parent/relationship or explicit re-parenting/reference;
+- `ABSORBED_BY` and `SUPERSEDED_BY` must identify the successor reference;
+- closing a parent never authorizes automatic child/follow-up closure;
+- descendants with independent lifecycle, approval, execution, evidence, or ownership remain independently controlled;
+- reconciliation records explain why each relevant descendant is complete, transferred, superseded, cancelled, not needed, or intentionally kept open.
+
+
+## 10. Source-of-truth hierarchy
 
 Each project must define canonical sources and their precedence.
 
@@ -138,13 +178,13 @@ Recommended model:
 
 Conversation history, AI memory, and local copies are context, not technical source of truth.
 
-## 8. Artifact identity and traceability
+## 11. Artifact identity and traceability
 
 AgentFlow artifacts use stable typed identifiers and mandatory parent links as defined in `ARTIFACT-TRACEABILITY.md`.
 
 Static identity/link rules are Core in v1.2. Automated artifact-graph validation is explicitly deferred to the future executable framework architecture.
 
-## 9. Architecture policy
+## 12. Architecture policy
 
 Material architecture changes require an Architecture Gate and explicit approval before implementation.
 
@@ -160,7 +200,7 @@ Typical triggers:
 - security/privacy/secrets model;
 - material cost or portability/exit impact.
 
-## 10. Implementation Preservation Rule
+## 13. Implementation Preservation Rule
 
 Approval of a feature or fix authorizes only the changes required for the approved outcome.
 
@@ -168,13 +208,13 @@ It does not implicitly authorize changes to component boundaries, APIs/contracts
 
 A materially different implementation mechanism is a separate change request unless already covered by the approved Architecture Gate.
 
-## 11. No Opportunistic Refactoring
+## 14. No Opportunistic Refactoring
 
 Do not use an approved feature or bugfix as authority for unrelated cleanup, redesign, reorganization, or refactoring.
 
 If a larger refactor is necessary to implement the approved change safely, document its necessity and impact and obtain approval before execution.
 
-## 12. Definition of Done
+## 15. Definition of Done
 
 A change is not complete merely because code exists.
 

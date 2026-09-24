@@ -1,8 +1,8 @@
 # AgentFlow Bootstrap Procedure
 
-Document version: `1.2.0`  
+Document version: `1.3.0`  
 Status: `CANONICAL`  
-Framework compatibility: `1.2.x`  
+Framework compatibility: `1.3.x`  
 Applies to: new AgentFlow adoption and revalidation
 
 ## 1. Purpose
@@ -124,8 +124,10 @@ Assess at minimum:
 - remediation-cycle budget;
 - single-active-executor/handoff;
 - stop conditions;
-- evidence classes;
-- Independent Review level/binding.
+- evidence sufficiency policy;
+- bounded execution-context policy / section-level context;
+- durable stage-result and analysis-checkpoint record mapping;
+- Independent Review level/binding and external-review write boundary.
 
 ### Release controls
 
@@ -147,7 +149,9 @@ Assess at minimum:
 
 - canonical source hierarchy;
 - artifact identity/parent links;
-- progressive context;
+- authoring vs execution context;
+- Execution Context distillation and pre-execution size;
+- semantic default exclusions / section-level references;
 - current/history separation.
 
 ## 9. Project Adapter generation
@@ -212,7 +216,9 @@ Revalidation is required after any of:
 - durable approval record change;
 - candidate identity mechanism change;
 - phase credential/access-boundary change;
-- AgentFlow framework version outside declared compatible range.
+- AgentFlow framework version outside declared compatible range;
+- durable stage/checkpoint record location change;
+- evidence/review/context-policy change.
 
 Project Adapter records:
 
@@ -232,6 +238,9 @@ Before completion verify:
 - candidate identity established;
 - phase access map exists;
 - review independence level >= Core minimum;
+- v1.3 evidence policy explicitly selected;
+- stage-result/checkpoint durable record mapping exists;
+- execution-context project values, if configured, are consistent between Adapter/config;
 - no project-specific rule leaked into Core;
 - no active work silently converted;
 - no unauthorized runtime/product mutation;

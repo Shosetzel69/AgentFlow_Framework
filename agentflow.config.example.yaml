@@ -1,26 +1,28 @@
 framework:
   name: AgentFlow
-  version: "1.2.0"
+  version: "1.3.0"
 
 project:
   name: "<project-name>"
   namespace: "<stable-project-namespace>"
   process: AGENTFLOW
   legacy_transition: false
-  compatible_framework: ">=1.2.0,<2.0.0"
+  compatible_framework: ">=1.3.0,<2.0.0"
   delivery_model: "<git|artifact|low-code|saas-config|other>"
   last_validated: "<YYYY-MM-DD>"
-  validated_framework_version: "1.2.0"
+  validated_framework_version: "1.3.0"
 
 records:
   system: "<issue-tracker|change-system|other>"
   artifact_id_mapping: "<native-id-rule-or-AgentFlow-pattern>"
-  durable_approval_location: "<project-specific-path-or-reference>"
-  review_record_location: "<project-specific-path-or-reference>"
-  candidate_manifest_location: "<project-specific-path-or-reference>"
+  durable_approval_location: "<reference>"
+  stage_result_location: "<reference>"
+  analysis_checkpoint_location: "<same-as-stage-result-or-reference>"
+  review_record_location: "<reference>"
+  candidate_manifest_location: "<reference>"
 
 approval:
-  owner_model: single_owner # single_owner | multi_approver
+  owner_model: single_owner
   tokens:
     bootstrap: "APPROVE_AGENTFLOW_BOOTSTRAP"
     requirement: "APPROVE_REQUIREMENT"
@@ -55,56 +57,44 @@ environments:
 
 access:
   by_phase:
-    requirements:
-      environments: []
-      credential_role: "<none-or-read-role>"
-      prod_mutation: false
-    architecture:
-      environments: []
-      credential_role: "<none-or-read-role>"
-      prod_mutation: false
-    development_analysis:
-      environments: ["<dev-read>"]
-      credential_role: "<read-role>"
-      prod_mutation: false
-    implementation:
-      environments: ["<dev>"]
-      credential_role: "<dev-executor-role>"
-      prod_mutation: false
-    evidence:
-      environments: ["<dev-read>"]
-      credential_role: "<evidence-read-role>"
-      prod_mutation: false
-    review:
-      environments: ["<dev-read>"]
-      credential_role: "<review-read-role>"
-      prod_mutation: false
-    test:
-      environments: ["<test>"]
-      credential_role: "<test-role>"
-      prod_mutation: false
-    prod_deploy:
-      environments: ["<prod>"]
-      credential_role: "<prod-deploy-role>"
-      prod_mutation: true
+    requirements: {environments: [], credential_role: "<read-or-none>", prod_mutation: false}
+    architecture: {environments: [], credential_role: "<read-or-none>", prod_mutation: false}
+    development_analysis: {environments: ["<dev-read>"], credential_role: "<read-role>", prod_mutation: false}
+    implementation: {environments: ["<dev>"], credential_role: "<executor-role>", prod_mutation: false}
+    evidence: {environments: ["<dev-read>"], credential_role: "<evidence-read-role>", prod_mutation: false}
+    review: {environments: ["<dev-read>"], credential_role: "<review-read-role>", prod_mutation: false}
+    test: {environments: ["<test>"], credential_role: "<test-role>", prod_mutation: false}
+    prod_deploy: {environments: ["<prod>"], credential_role: "<prod-deploy-role>", prod_mutation: true}
 
 execution:
   default_retry_limit: 2
   remediation_cycle_budget: 2
   single_active_executor_per_atc: true
   handoff_record_required: true
+  context:
+    primary_measure: characters
+    normal_estimated_token_target: 5000
+    stretch_estimated_token_target: 3000
+    full_document_reads_exceptional: true
+    source_code_exploration_separate: true
 
 evidence:
-  mandatory_check_min_class: ARTIFACT # ARTIFACT | REPRODUCIBLE
-  reproducibility_field_required: true
+  mandatory_check_policy: ARTIFACT_OR_REPRODUCIBLE
+  # ARTIFACT_OR_REPRODUCIBLE | ARTIFACT_REQUIRED | REPRODUCIBLE_REQUIRED | BOTH_REQUIRED
+  stable_reference_preferred: true
+  context_telemetry_required: true
 
 review:
-  independence_level: IR1_FRESH_CONTEXT # IR1 | IR2 | IR3
+  independence_level: IR1_FRESH_CONTEXT
   candidate_binding_required: true
+  durable_record_location: "<reference>"
+  external_reviewer_write_scope: review_records_only
+  implementation_mutation_allowed: false
 
 release:
   candidate_identity: "<commit_sha|artifact_hash|snapshot_id|other>"
   candidate_manifest_required: true
+  environment_transition_readiness_required: true
   rollback_required_before_prod: true
   explicit_prod_go_required: true
   exact_candidate_promotion_required: true
@@ -112,14 +102,6 @@ release:
     enabled: true
     explicit_approval_required: true
     reconciliation_required: true
-  hotfix:
-    may_reduce_test_breadth: true
-    may_skip_requirement_approval: false
-    may_skip_atc_approval: false
-    may_skip_evidence: false
-    may_skip_independent_review: false
-    may_skip_candidate_manifest: false
-    may_skip_prod_go: false
 
 data_handling:
   production_data_in_nonprod:
@@ -135,8 +117,10 @@ revalidation:
     - ci_cd_or_deployment_change
     - owner_or_approval_model_change
     - approval_record_location_change
+    - stage_or_checkpoint_record_location_change
     - candidate_identity_mechanism_change
     - phase_access_boundary_change
+    - evidence_or_review_policy_change
     - incompatible_framework_version
   gaps_require_owner: true
   gaps_require_closure_condition: true
@@ -144,7 +128,7 @@ revalidation:
 metrics:
   catalogue: "METRICS.md"
   collection: "<manual|project-specific-tooling|none>"
-  gate_response_expectations: {}
+  controlled_context_separate_from_source_exploration: true
 
 documentation:
   architecture: "<path-or-system>"

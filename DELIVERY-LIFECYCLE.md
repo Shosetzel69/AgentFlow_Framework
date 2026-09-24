@@ -1,8 +1,8 @@
 # AgentFlow Delivery Lifecycle — DEV → TEST → PROD
 
 Status: `REFERENCE CORE`  
-Document version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Document version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 ## 1. Goal
 
@@ -138,12 +138,14 @@ Minimum:
 
 ### G4 — PROD GO
 
+Before PROD_GO, classify every affected persistent target environment as `ALREADY_COMPLIANT`, `TRUSTED_BOOTSTRAP`, `APPROVED_TRANSITION_READY`, or `BLOCKED`. Any unresolved `BLOCKED` target yields `RELEASE_BLOCKED`. This is a release-readiness condition, not a new human approval gate.
+
 Minimum:
 
 - TEST-passed candidate is the one being promoted;
 - Candidate Manifest is complete and current;
 - every included ATC/work item in the manifest has the required approval/evidence/review references;
-- integration did not rewrite candidate identity, or an equivalent immutable artifact mapping is proven;
+- integration did not rewrite candidate identity, or composition/equivalence is proven by independently verifiable ARTIFACT or REPRODUCIBLE evidence;
 - current review/test evidence applies to that exact identity;
 - previous production identity captured;
 - rollback action/reference known, or forward-fix exception conditions explicitly satisfied;
@@ -192,7 +194,7 @@ The manifest records:
 - known exclusions/limitations;
 - manifest author and timestamp.
 
-The manifest is a static traceability control in v1.2. Automated dependency/composition verification is deferred to the future executable framework.
+The manifest is a static traceability control. Automated dependency/composition verification remains deferred. If equivalence to a previously reviewed identity cannot be independently verified, fresh evidence/review is required for the candidate proceeding.
 
 Any candidate mutation invalidates the prior manifest for promotion.
 
