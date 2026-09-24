@@ -50,6 +50,13 @@ Declare overlapping ownership explicitly.
 ## Proposed ATCs
 -
 
+## Environment transition analysis
+
+When an approved architecture change affects persistent environment invariants:
+- affected environments:
+- planned bootstrap/migration/transition mechanism:
+- expected readiness classification/evidence:
+
 ## Execution Context per proposed ATC
 
 Development Analysis must distill authoring context into a bounded execution packet for every proposed ATC.
