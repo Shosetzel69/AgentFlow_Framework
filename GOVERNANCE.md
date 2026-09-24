@@ -1,8 +1,8 @@
 # AgentFlow Governance
 
 Status: `REFERENCE CORE`  
-Document version: `1.2.0`  
-Framework compatibility: `1.2.x`
+Document version: `1.3.0`  
+Framework compatibility: `1.3.x`
 
 ## 1. Decision model
 
@@ -121,7 +121,21 @@ A transient chat message may be the source of an owner decision, but the workflo
 
 The Project Adapter defines the durable approval system/location. Core does not require a specific issue tracker or source-control platform.
 
-## 7. Source-of-truth hierarchy
+## 7. Gate authority
+
+Agents do not create or activate gates by inference. A gate is authoritative only when it is defined by Core, by an enabled Project Adapter/config rule permitted by Core, or by an explicitly approved governance change.
+
+Consultation, recommendation, audit finding, reviewer suggestion, precedent, or agent preference is non-authoritative for creating a gate.
+
+A stage may record `NO APPROVAL GATE REQUIRED` when no authoritative human approval gate applies. This is a disposition, not an approval token and not a new workflow status.
+
+## 8. Durable stage-result support
+
+A readiness/approval state must not outrun the durable material analysis/result that supports it. Material outcomes required for controlled continuation must be persisted in the configured durable record before canonical completion/readiness is claimed.
+
+This durability rule does not create a new approval gate or artifact type.
+
+## 9. Source-of-truth hierarchy
 
 Each project must define canonical sources and their precedence.
 
@@ -138,13 +152,13 @@ Recommended model:
 
 Conversation history, AI memory, and local copies are context, not technical source of truth.
 
-## 8. Artifact identity and traceability
+## 10. Artifact identity and traceability
 
 AgentFlow artifacts use stable typed identifiers and mandatory parent links as defined in `ARTIFACT-TRACEABILITY.md`.
 
 Static identity/link rules are Core in v1.2. Automated artifact-graph validation is explicitly deferred to the future executable framework architecture.
 
-## 9. Architecture policy
+## 11. Architecture policy
 
 Material architecture changes require an Architecture Gate and explicit approval before implementation.
 
@@ -160,7 +174,7 @@ Typical triggers:
 - security/privacy/secrets model;
 - material cost or portability/exit impact.
 
-## 10. Implementation Preservation Rule
+## 12. Implementation Preservation Rule
 
 Approval of a feature or fix authorizes only the changes required for the approved outcome.
 
@@ -168,13 +182,13 @@ It does not implicitly authorize changes to component boundaries, APIs/contracts
 
 A materially different implementation mechanism is a separate change request unless already covered by the approved Architecture Gate.
 
-## 11. No Opportunistic Refactoring
+## 13. No Opportunistic Refactoring
 
 Do not use an approved feature or bugfix as authority for unrelated cleanup, redesign, reorganization, or refactoring.
 
 If a larger refactor is necessary to implement the approved change safely, document its necessity and impact and obtain approval before execution.
 
-## 12. Definition of Done
+## 14. Definition of Done
 
 A change is not complete merely because code exists.
 
