@@ -1,56 +1,56 @@
 # AgentFlow Compatibility
 
 Status: `REFERENCE`  
-Current framework version: `1.2.0`
+Current framework version: `1.3.0`
 
 ## 1. Upgrade principle
 
-A framework release never changes a consuming project automatically.
+A framework release never changes a consuming project automatically. Projects explicitly adopt an upgrade through their governance, Project Adapter and config.
 
-Each project explicitly adopts an upgrade through its own governance, Project Adapter, and config.
+Historical artifacts retain the framework/Core semantics under which they were approved. A v1.3 adoption does not retroactively reinterpret an approved v1.2 ATC.
 
-## 2. v1.1.0 → v1.2.0
+## 2. v1.2.x → v1.3.0
 
-v1.2.0 retains the v1 process architecture but strengthens its contracts and traceability.
+v1.3 retains the document/protocol architecture and adds bounded measurable execution context plus proof/release hardening.
 
-A consuming project adopting v1.2 must add/map:
+A project adopting v1.3 revalidates at least:
 
-1. bootstrap and Requirement approval tokens;
-2. durable approval record;
-3. typed artifact IDs / parent links;
-4. Development Analysis artifact;
-5. evidence classes and mandatory-check proof strength;
-6. review independence level;
-7. candidate-bound review;
-8. Candidate Manifest;
-9. remediation-cycle budget;
-10. executor provenance/handoff;
-11. phase-scoped access boundary;
-12. production-data non-PROD rule;
-13. forward-fix recovery path;
-14. revalidation metadata/gap ownership;
-15. updated machine-readable config schema.
+1. `AI-EXECUTION-RULES.md` as the compact canonical normal-executor rules source;
+2. Development Analysis `Execution Context` per proposed ATC;
+3. authoring-time controlled-context size/readiness;
+4. semantic default exclusions and section/range references;
+5. durable stage-result / analysis-checkpoint record mapping;
+6. explicit evidence sufficiency policy;
+7. execution-rules version + controlled-context telemetry in Evidence;
+8. external-review durable record/access boundary;
+9. candidate composition/equivalence proof;
+10. environment-transition readiness;
+11. execution-context metric collection where used.
 
-Existing historical items do not need bulk rewriting. Apply v1.2 rules prospectively and to active work when materially touched, unless the consuming project chooses a stricter migration.
+Existing approved v1.2 work does not require bulk rewrite. New/revised v1.3 ATCs use v1.3 templates/rules after explicit project adoption.
 
-## 3. Recommended compatibility declaration
+## 3. Reference benchmark compatibility
 
-`>=1.2.0,<2.0.0`
+The framework reference execution scenario has its own ID/version. Same-scenario results may be compared across framework releases.
 
-This communicates compatibility with the protocol/document architecture before the future executable framework major version.
+Changing scenario semantics requires a new scenario version and explicit baseline reset recorded in release history. Do not compare different scenario versions as one continuous benchmark.
 
-## 4. v1.1.1 status
+Initial benchmark: `RES-1 v1.0`, AgentFlow v1.2.0 baseline, durable record in framework work item #12 / ADR-12 lineage.
 
-v1.1.1 was a pre-release audit-remediation candidate and was superseded before merge/release.
+## 4. Recommended compatibility declaration
 
-Projects should upgrade from v1.1.0 directly to v1.2.0.
+For projects adopting v1.3:
 
-## 5. Deprecated artifact
+`>=1.3.0,<2.0.0`
+
+Projects still on v1.2 remain on their previously validated range until explicit adoption.
+
+## 5. Earlier versions
+
+v1.1.1 was a superseded pre-release candidate. v1.1.0 projects should adopt through documented migration rather than assuming compatibility.
 
 `templates/EXECUTABLE-TASK.md` remains compatibility-only and cannot create execution authority.
 
-## 6. Future major compatibility
+## 6. Future major boundary
 
-Machine-readable workflow state, automated policy checks, artifact-graph automation, lock/concurrency management, and an orchestrator will require a major-version architecture/migration decision.
-
-They are not part of v1.2.0.
+Machine-readable workflow state, automatic gate/context enforcement, artifact-graph automation, lock/concurrency management and orchestration remain outside v1.3 and require a future architecture/migration decision.
