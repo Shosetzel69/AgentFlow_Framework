@@ -1,5 +1,9 @@
 # AgentFlow Delivery Framework — Independent Kit
 
+> **AgentFlow spends context during analysis so that execution does not have to.**
+
+Development Analysis may inspect broad context, but it distills normal execution into an approved ATC, compact AI execution rules, and exact required project/source context.
+
 Version: `1.2.0`  
 Status: `REFERENCE CORE`
 
