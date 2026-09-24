@@ -65,7 +65,26 @@ or the canonical blocked status for the phase.
 
 Development Analysis does not perform coding, deployment, schema mutation, or data migration.
 
-## 5. Agent Task Contract
+## 5. Work-item creation discipline
+
+Create a separate child/follow-up work item only when independent control is materially useful, such as a distinct lifecycle, approval decision, owner, implementation/execution path, evidence trail, release timing, or durable blocker.
+
+Do not create a new work item merely because:
+- a discussion produced another observation;
+- a checklist item can be written separately;
+- a recommendation/audit note exists;
+- decomposition would only duplicate the parent scope and evidence.
+
+When work stays inside the same controlled outcome, prefer the parent Requirement/DA/ATC acceptance criteria, checklist, checkpoint, or explicit dependency reference.
+
+When a child/follow-up is created:
+- record the parent/relationship;
+- state the independent reason for the separate lifecycle;
+- include it in parent reconciliation before parent closure.
+
+This discipline prevents ticket cascades without hiding independently controlled work.
+
+## 6. Agent Task Contract
 
 An ATC is the smallest explicitly approvable unit of implementation and the only canonical executable contract in Core.
 
@@ -88,7 +107,7 @@ Minimum control fields include:
 
 An ATC becomes executable only after the exact approval required by `GOVERNANCE.md` is durably recorded.
 
-## 6. Execution ownership and provenance
+## 7. Execution ownership and provenance
 
 Each active ATC has **one active executor at a time** in v1.2.
 
@@ -112,7 +131,7 @@ A handoff to a new executor is allowed only when recorded with:
 
 This is a procedural single-active-executor rule, not an orchestrator lock. Automated locking/concurrency remains out of scope until the executable framework architecture.
 
-## 7. Execution rules
+## 8. Execution rules
 
 `AI-EXECUTION-RULES.md` is the compact canonical rules source for normal execution. Do not restate its universal executor rules here.
 
@@ -120,7 +139,7 @@ Normal execution starts from the exact approved ATC, the applicable AI execution
 
 A missing execution rule or authority is contract incompleteness and causes STOP; it is not resolved by exploratory Core/history loading. Missing project/source detail may use bounded targeted context expansion.
 
-## 8. Retry and remediation-cycle model
+## 9. Retry and remediation-cycle model
 
 ### Per-execution retry limit
 
@@ -151,7 +170,7 @@ When the budget is exhausted:
 
 The budget cannot be silently reset.
 
-## 9. Gate authority and durable continuity
+## 10. Gate authority and durable continuity
 
 Only gates defined by Core, an enabled Project Adapter/config rule permitted by Core, or an explicitly approved governance change are authoritative. Consultation, recommendations, audits, reviewer suggestions, precedent, or agent preference do not create gates.
 
@@ -161,7 +180,7 @@ A completed stage is not canonically complete when its material result exists on
 
 If configured persistence is unavailable, record persistence as pending and do not claim canonical completion/readiness supported only by transient conversation.
 
-## 10. Stop Conditions
+## 11. Stop Conditions
 
 Stop and escalate when a material issue appears in any of these categories:
 
@@ -182,7 +201,7 @@ Stop and escalate when a material issue appears in any of these categories:
 
 Do not escalate purely local, reversible, in-scope implementation choices that remain compatible with approved architecture.
 
-## 11. Evidence sufficiency
+## 12. Evidence sufficiency
 
 Evidence classes describe proof form:
 - `ATTESTED` — statement/manual report only;
@@ -199,7 +218,7 @@ There is no total strength ordering between ARTIFACT and REPRODUCIBLE. `ATTESTED
 
 Prefer durable references over embedding large logs/evidence bodies when a stable reference exists.
 
-## 12. Evidence Bundle
+## 13. Evidence Bundle
 
 Evidence is candidate-bound and must allow verification without reconstructing conversation history.
 
@@ -207,7 +226,7 @@ Minimum includes exact ATC/candidate identity, executor provenance, changed comp
 
 Telemetry is post-execution measurement; it does not replace Development Analysis authoring-time context-readiness evidence.
 
-## 13. Independent Review
+## 14. Independent Review
 
 Reviewer inputs are the exact approved ATC, exact candidate and matching Evidence Bundle.
 
@@ -220,7 +239,7 @@ Verdicts:
 
 Mandatory evidence-policy failure or unverifiable required candidate equivalence blocks review.
 
-### 13.1 Review independence levels
+### 14.1 Review independence levels
 
 `IR0_SELF` does not satisfy Independent Review.
 
@@ -232,13 +251,13 @@ Mandatory evidence-policy failure or unverifiable required candidate equivalence
 
 Project Adapter selects IR1 or stronger.
 
-### 13.2 Candidate binding and invalidation
+### 14.2 Candidate binding and invalidation
 
 A verdict is valid only for the exact reviewed candidate. If content changes, prior review remains history but does not transfer.
 
 Composition equivalence to another immutable identity must be independently verifiable by ARTIFACT or REPRODUCIBLE proof. If not, create fresh evidence/review.
 
-## 14. Handoff to release lifecycle
+## 15. Handoff to release lifecycle
 
 After a valid `REVIEW_PASS` for the exact current implementation candidate and DEV verification, promotion uses `DELIVERY-LIFECYCLE.md`.
 
